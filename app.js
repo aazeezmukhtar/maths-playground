@@ -125,11 +125,11 @@ function renderPizza(){
 function setModelDenominator(value){modelDenominator=Math.max(2,Math.min(12,Math.round(Number(value)||2)));if(modelSplit==='diagonal'&&modelDenominator!==2)modelSplit='vertical';if(modelSplit==='quarters'&&modelDenominator!==4)modelSplit='vertical';selectedSlices.clear();$$('[data-split]').forEach(b=>{const active=b.dataset.split===modelSplit;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});renderPizza();}
 
 const practiceActivities = {
-  shade:{title:'Shade the Fraction',icon:'🎨',description:'Tap the right number of pieces to show a fraction.',questions:[
-    {n:1,d:2,hint:'The top number tells you how many pieces to shade.',explain:'1 out of 2 equal pieces is one half.'},
-    {n:3,d:4,hint:'Count three pieces, then leave one unshaded.',explain:'3 of the 4 equal pieces are shaded, so the fraction is 3/4.'},
-    {n:2,d:5,hint:'Shade exactly two of the five equal pieces.',explain:'2 shaded pieces out of 5 equal pieces is 2/5.'},
-    {n:4,d:6,hint:'Shade four pieces. The total number of pieces stays six.',explain:'4 of the 6 equal pieces are shaded, so the fraction is 4/6.'}]},
+  shade:{title:'Shade the Fraction',icon:'🎨',description:'Build some models with the number scale, then shade the fraction.',questions:[
+    {n:1,d:2,type:'fixed',hint:'The top number tells you how many pieces to shade.',explain:'1 out of 2 equal pieces is one half.'},
+    {n:3,d:8,type:'build',hint:'First use the denominator scale to make 8 equal pieces. Then shade 3.',explain:'3 of 8 equal pieces are shaded, so the fraction is 3/8.'},
+    {n:2,d:5,type:'fixed',hint:'Shade exactly two of the five equal pieces.',explain:'2 shaded pieces out of 5 equal pieces is 2/5.'},
+    {n:4,d:6,type:'build',hint:'Set the denominator scale to 6. Then shade 4 pieces.',explain:'4 of the 6 equal pieces are shaded, so the fraction is 4/6.'}]},
   match:{title:'Match the Fraction',icon:'🧩',description:'Read the picture and choose the fraction it shows.',questions:[
     {n:1,d:3,hint:'Count the coloured parts first, then count all the equal parts.',explain:'One of three equal parts is 1/3.'},
     {n:3,d:5,hint:'The numerator is the number of coloured parts.',explain:'Three coloured parts out of five equal parts is 3/5.'},
@@ -146,7 +146,7 @@ const practiceActivities = {
     {prompt:'? / 8 = 1/2',correct:'4',answers:['2','3','4','6'],hint:'Half of 8 equal parts is 4 parts.',explain:'4/8 is equal to 1/2.'},
     {prompt:'2/4 = ?/8',correct:'4',answers:['2','3','4','6'],hint:'The denominator doubled from 4 to 8. Double the numerator too.',explain:'2/4 equals 4/8 because both fractions represent one half.'}]}
 };
-let activePracticeMode=null,activePracticeQuestion=0,shadeSelection=new Set(),activePracticeAnswered=false;
+let activePracticeMode=null,activePracticeQuestion=0,shadeSelection=new Set(),activePracticeAnswered=false,shadeDenominator=2;
 function renderPracticeMenu(){
  const menu=$('#practice-menu'),game=$('#practice-game');if(!menu||!game)return;menu.hidden=false;game.hidden=true;menu.replaceChildren();
  Object.entries(practiceActivities).forEach(([key,a])=>{const card=document.createElement('button');card.type='button';card.className='practice-activity-card';card.innerHTML='<span class="practice-activity-icon" aria-hidden="true"></span><span class="practice-activity-copy"><strong></strong><small></small></span><span class="practice-activity-arrow" aria-hidden="true">→</span>';$('.practice-activity-icon',card).textContent=a.icon;$('.practice-activity-copy strong',card).textContent=a.title;$('.practice-activity-copy small',card).textContent=a.description;card.addEventListener('click',()=>startPracticeActivity(key));menu.append(card);});
@@ -156,11 +156,14 @@ function makeFractionPicture(n,d,interactive=false){
  const wrap=document.createElement('div');wrap.className='practice-fraction-picture';wrap.setAttribute('role',interactive?'group':'img');wrap.setAttribute('aria-label',`${n} of ${d} equal parts shaded`);
  for(let i=0;i<d;i++){const piece=document.createElement(interactive?'button':'span');if(interactive){piece.type='button';piece.className='shade-piece';piece.setAttribute('aria-label',`Part ${i+1}`);piece.setAttribute('aria-pressed',String(shadeSelection.has(i)));piece.addEventListener('click',()=>{if(activePracticeAnswered)return;if(shadeSelection.has(i))shadeSelection.delete(i);else shadeSelection.add(i);renderShadePieces();});piece.classList.toggle('is-shaded',shadeSelection.has(i));}else{piece.className='picture-piece'+(i<n?' filled':'');piece.textContent=i<n?'●':'';}wrap.append(piece);}return wrap;
 }
-function renderShadePieces(){const holder=$('#practice-interactive-visual');if(!holder||activePracticeMode!=='shade')return;const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];holder.replaceChildren(makeFractionPicture(q.n,q.d,true));$('#practice-live-count').textContent=`${shadeSelection.size} of ${q.d} pieces selected`;}
+function renderShadePieces(){const holder=$('#practice-interactive-visual');if(!holder||activePracticeMode!=='shade')return;const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length],denominator=q.type==='build'?shadeDenominator:q.d;holder.replaceChildren(makeFractionPicture(q.n,denominator,true));$('#practice-live-count').textContent=`${shadeSelection.size} of ${denominator} pieces selected`;}
 function renderPracticeQuestion(){
  if(!activePracticeMode)return renderPracticeMenu();const a=practiceActivities[activePracticeMode],qs=a.questions,q=qs[activePracticeQuestion%qs.length];activePracticeAnswered=false;shadeSelection=new Set();
  $('#practice-game-title').textContent=a.title;$('#practice-game-count').textContent=`ROUND ${activePracticeQuestion%qs.length+1} OF ${qs.length}`;$('#practice-game-progress').style.width=`${activePracticeQuestion%qs.length/qs.length*100}%`;
- $('#practice-game-prompt').textContent=activePracticeMode==='shade'?`Show ${q.n}/${q.d} by shading the pieces.`:activePracticeMode==='match'?'Which fraction does this picture show?':activePracticeMode==='compare'?'Which fraction is bigger?':q.prompt;
+ $('#practice-game-prompt').textContent=activePracticeMode==='shade'?(q.type==='build'?`Build ${q.n}/${q.d}: set the denominator first, then shade ${q.n} pieces.`:`Show ${q.n}/${q.d} by shading the pieces.`):activePracticeMode==='match'?'Which fraction does this picture show?':activePracticeMode==='compare'?'Which fraction is bigger?':q.prompt;
+ const shadePicker=$('#shade-denominator-picker'),shadeScale=$('#shade-denominator-control');
+ if(shadePicker)shadePicker.hidden=activePracticeMode!=='shade'||q.type!=='build';
+ if(shadeScale&&activePracticeMode==='shade'&&q.type==='build'){shadeDenominator=q.d===2?3:2;shadeScale.value=String(shadeDenominator);$('#shade-denominator-value').textContent=String(shadeDenominator);}
  const visual=$('#practice-game-visual'),interactive=$('#practice-interactive-visual'),answers=$('#practice-game-answers');visual.replaceChildren();interactive.replaceChildren();interactive.hidden=activePracticeMode!=='shade';$('#practice-live-count').textContent='';
  if(activePracticeMode==='shade')renderShadePieces();
  else if(activePracticeMode==='match')visual.append(makeFractionPicture(q.n,q.d));
@@ -179,6 +182,13 @@ function renderPracticeQuestion(){
   choices.sort(()=>Math.random()-.5).forEach(answer=>{const b=document.createElement('button');b.type='button';b.className='answer-button';b.textContent=answer;b.addEventListener('click',()=>answerMiniPractice(answer,b));answers.append(b);});
  }
  $('#practice-game-feedback').hidden=true;$('#practice-game-feedback').className='feedback-message';$('#practice-game-next').disabled=true;$('#practice-game-next').textContent=activePracticeQuestion%qs.length===qs.length-1?'Play another round →':'Next question →';$('#practice-game-hint-message').hidden=true;$('#practice-game-hint').disabled=false;$('#practice-check-shading').disabled=false;
+}
+function showShadeRetry(message){const feedback=$('#practice-game-feedback');feedback.hidden=false;feedback.className='feedback-message try-again';feedback.textContent=message;}
+function checkShadePractice(){
+ if(activePracticeAnswered)return;const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];
+ if(q.type==='build'&&shadeDenominator!==q.d){shadeSelection.clear();renderShadePieces();showShadeRetry(`Your model has ${shadeDenominator} parts, but the denominator needs to be ${q.d}. Adjust the scale and try again.`);return;}
+ if(shadeSelection.size!==q.n){showShadeRetry(`You shaded ${shadeSelection.size} piece${shadeSelection.size===1?'':'s'}. Try shading exactly ${q.n}.`);return;}
+ finishMiniPractice(true,q.explain);
 }
 function finishMiniPractice(correct,explain){
  if(activePracticeMode==='shade'){const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];$$('.shade-piece',$('#practice-interactive-visual')).forEach(b=>b.disabled=true);$('#practice-check-shading').disabled=true;correct=shadeSelection.size===q.n;}
@@ -257,7 +267,8 @@ if ($('#fraction-workspace')) {
  $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
  $('#practice-menu-back').addEventListener('click',()=>{activePracticeMode=null;renderPracticeMenu();});
  $('#practice-game-next').addEventListener('click',nextMiniPractice);
- $('#practice-check-shading').addEventListener('click',()=>{const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];finishMiniPractice(shadeSelection.size===q.n,q.explain);});
+ $('#practice-check-shading').addEventListener('click',checkShadePractice);
+ const shadeScale=$('#shade-denominator-control');if(shadeScale)shadeScale.addEventListener('input',()=>{shadeDenominator=Number(shadeScale.value);shadeSelection.clear();$('#shade-denominator-value').textContent=String(shadeDenominator);$('#practice-game-feedback').hidden=true;$('#practice-check-shading').disabled=false;renderShadePieces();});
  $('#practice-game-hint').addEventListener('click',()=>{const q=practiceActivities[activePracticeMode].questions[activePracticeQuestion%practiceActivities[activePracticeMode].questions.length];const box=$('#practice-game-hint-message');box.textContent=q.hint;box.hidden=false;});
  $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
  renderPracticeMenu();
