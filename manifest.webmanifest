@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "Maths Playground",
+  "short_name": "Maths Play",
+  "description": "A playful interactive maths learning app for primary learners.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f7f8fc",
+  "theme_color": "#635bdb",
+  "categories": ["education", "kids"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
