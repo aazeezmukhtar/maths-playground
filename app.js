@@ -121,7 +121,7 @@ function renderPizza(){
  model.replaceChildren(svg);const count=selectedSlices.size,total=segments.length,name=modelShape==='pizza'?'pizza':modelShape;$('#pizza-readout').textContent=`${count}/${total}`;$('#pizza-caption').textContent=count===0?`A ${name} divided into ${total} equal parts. Tap a part to select it.`:count===total?`You selected all ${total} parts: one whole ${name}!`:`You selected ${count} of ${total} equal parts: ${count}/${total}.`;
  const value=$('#denominator-value'),slider=$('#denominator-slider'),minus=$('#denominator-minus'),plus=$('#denominator-plus');if(value)value.textContent=modelDenominator;if(slider)slider.value=modelDenominator;if(minus)minus.disabled=modelDenominator<=2;if(plus)plus.disabled=modelDenominator>=12;
 }
-function setModelDenominator(value){modelDenominator=Math.max(2,Math.min(12,Number(value)||2));if(modelSplit==='diagonal'&&modelDenominator!==2)modelSplit='vertical';if(modelSplit==='quarters'&&modelDenominator!==4)modelSplit='vertical';selectedSlices.clear();$$('[data-split]').forEach(b=>{const active=b.dataset.split===modelSplit;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});renderPizza();}
+function setModelDenominator(value){modelDenominator=Math.max(2,Math.min(12,Math.round(Number(value)||2)));if(modelSplit==='diagonal'&&modelDenominator!==2)modelSplit='vertical';if(modelSplit==='quarters'&&modelDenominator!==4)modelSplit='vertical';selectedSlices.clear();$('[data-split]').forEach(b=>{const active=b.dataset.split===modelSplit;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});renderPizza();}
 
 function renderPractice() {
   const q = practiceQuestions[practiceIndex % practiceQuestions.length];
@@ -246,7 +246,7 @@ if ($('#fraction-workspace')) {
  const denominatorSlider=$('#denominator-slider');if(denominatorSlider)denominatorSlider.addEventListener('input',()=>setModelDenominator(denominatorSlider.value));
  const denominatorMinus=$('#denominator-minus');if(denominatorMinus)denominatorMinus.addEventListener('click',()=>setModelDenominator(modelDenominator-1));
  const denominatorPlus=$('#denominator-plus');if(denominatorPlus)denominatorPlus.addEventListener('click',()=>setModelDenominator(modelDenominator+1));
- $$('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;selectedSlices.clear();$$('[data-split]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
+ $('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;if(modelSplit==='diagonal')modelDenominator=2;else if(modelSplit==='quarters')modelDenominator=4;selectedSlices.clear();$('[data-split]').forEach(item=>{const active=item.dataset.split===modelSplit;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
  $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
  $('#practice-next').addEventListener('click',nextPractice);
  $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
