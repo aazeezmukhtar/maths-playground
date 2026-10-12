@@ -93,56 +93,35 @@ function switchPanel(name) {
   });
   $$('.activity-panel').forEach(panel => { panel.hidden = panel.dataset.activity !== name; });
 }
-let modelShape='pizza';
-let modelSplit='quarters';
+let modelShape='pizza',modelSplit='quarters',modelDenominator=4;
 function getModelSegments(){
- const circle=modelShape==='pizza',x=modelShape==='square'?50:30,y=modelShape==='square'?25:45,w=modelShape==='square'?140:180,h=modelShape==='square'?140:110;
- if(circle){
-  if(modelSplit==='quarters')return [
-   {d:'M120 100 L120 20 A80 80 0 0 1 200 100 Z',label:'Top-right quarter'},
-   {d:'M120 100 L200 100 A80 80 0 0 1 120 180 Z',label:'Bottom-right quarter'},
-   {d:'M120 100 L120 180 A80 80 0 0 1 40 100 Z',label:'Bottom-left quarter'},
-   {d:'M120 100 L40 100 A80 80 0 0 1 120 20 Z',label:'Top-left quarter'}];
-  if(modelSplit==='horizontal')return [
-   {d:'M40 100 A80 80 0 0 1 200 100 L120 100 Z',label:'First half'},
-   {d:'M200 100 A80 80 0 0 1 40 100 L120 100 Z',label:'Second half'}];
-  if(modelSplit==='vertical')return [
-   {d:'M120 20 A80 80 0 0 0 120 180 L120 100 Z',label:'Left half'},
-   {d:'M120 180 A80 80 0 0 0 120 20 L120 100 Z',label:'Right half'}];
-  return [
-   {d:'M176.6 43.4 A80 80 0 0 1 63.4 156.6 Z',label:'Diagonal half one'},
-   {d:'M63.4 156.6 A80 80 0 0 1 176.6 43.4 Z',label:'Diagonal half two'}];
- }
- if(modelSplit==='horizontal')return [
-  {d:`M${x} ${y} H${x+w} V${y+h/2} H${x} Z`,label:'Top half'},
-  {d:`M${x} ${y+h/2} H${x+w} V${y+h} H${x} Z`,label:'Bottom half'}];
- if(modelSplit==='vertical')return [
-  {d:`M${x} ${y} H${x+w/2} V${y+h} H${x} Z`,label:'Left half'},
-  {d:`M${x+w/2} ${y} H${x+w} V${y+h} H${x+w/2} Z`,label:'Right half'}];
- if(modelSplit==='diagonal')return [
-  {d:`M${x} ${y} H${x+w} L${x} ${y+h} Z`,label:'Diagonal half one'},
-  {d:`M${x+w} ${y} V${y+h} H${x} Z`,label:'Diagonal half two'}];
- return [
-  {d:`M${x} ${y} H${x+w/2} V${y+h/2} H${x} Z`,label:'Top-left quarter'},
-  {d:`M${x+w/2} ${y} H${x+w} V${y+h/2} H${x+w/2} Z`,label:'Top-right quarter'},
-  {d:`M${x+w/2} ${y+h/2} H${x+w} V${y+h} H${x+w/2} Z`,label:'Bottom-right quarter'},
-  {d:`M${x} ${y+h/2} H${x+w/2} V${y+h} H${x} Z`,label:'Bottom-left quarter'}];
+ const circle=modelShape==='pizza',x=modelShape==='square'?50:30,y=modelShape==='square'?25:45,w=modelShape==='square'?140:180,h=modelShape==='square'?140:110,n=modelDenominator;
+ if(circle&&modelSplit==='diagonal'&&n===2)return[{d:'M176.6 43.4 A80 80 0 0 1 63.4 156.6 Z',label:'Diagonal half one'},{d:'M63.4 156.6 A80 80 0 0 1 176.6 43.4 Z',label:'Diagonal half two'}];
+ if(circle&&modelSplit==='horizontal'&&n===2)return[{d:'M40 100 A80 80 0 0 1 200 100 L120 100 Z',label:'Top half'},{d:'M200 100 A80 80 0 0 1 40 100 L120 100 Z',label:'Bottom half'}];
+ if(circle&&modelSplit==='vertical'&&n===2)return[{d:'M120 20 A80 80 0 0 0 120 180 L120 100 Z',label:'Left half'},{d:'M120 180 A80 80 0 0 0 120 20 L120 100 Z',label:'Right half'}];
+ if(circle&&modelSplit==='quarters'&&n===4)return[
+ {d:'M120 100 L120 20 A80 80 0 0 1 200 100 Z',label:'Top-right quarter'},
+ {d:'M120 100 L200 100 A80 80 0 0 1 120 180 Z',label:'Bottom-right quarter'},
+ {d:'M120 100 L120 180 A80 80 0 0 1 40 100 Z',label:'Bottom-left quarter'},
+ {d:'M120 100 L40 100 A80 80 0 0 1 120 20 Z',label:'Top-left quarter'}];
+ if(circle){const out=[];for(let i=0;i<n;i++){const a=-Math.PI/2+2*Math.PI*i/n,b=-Math.PI/2+2*Math.PI*(i+1)/n,x1=120+80*Math.cos(a),y1=100+80*Math.sin(a),x2=120+80*Math.cos(b),y2=100+80*Math.sin(b);out.push({d:`M120 100 L${x1.toFixed(3)} ${y1.toFixed(3)} A80 80 0 0 1 ${x2.toFixed(3)} ${y2.toFixed(3)} Z`,label:`Slice ${i+1} of ${n}`});}return out;}
+ if(modelSplit==='diagonal'&&n===2)return[{d:`M${x} ${y} H${x+w} L${x} ${y+h} Z`,label:'Diagonal half one'},{d:`M${x+w} ${y} V${y+h} H${x} Z`,label:'Diagonal half two'}];
+ if(modelSplit==='quarters'&&n===4)return[
+ {d:`M${x} ${y} H${x+w/2} V${y+h/2} H${x} Z`,label:'Top-left quarter'},
+ {d:`M${x+w/2} ${y} H${x+w} V${y+h/2} H${x+w/2} Z`,label:'Top-right quarter'},
+ {d:`M${x+w/2} ${y+h/2} H${x+w} V${y+h} H${x+w/2} Z`,label:'Bottom-right quarter'},
+ {d:`M${x} ${y+h/2} H${x+w/2} V${y+h} H${x} Z`,label:'Bottom-left quarter'}];
+ const out=[],horizontal=modelSplit==='horizontal';for(let i=0;i<n;i++){if(horizontal){const bh=h/n,t=y+bh*i,b=y+bh*(i+1);out.push({d:`M${x} ${t} H${x+w} V${b} H${x} Z`,label:`Part ${i+1} of ${n}, horizontal`});}else{const bw=w/n,l=x+bw*i,r=x+bw*(i+1);out.push({d:`M${l} ${y} H${r} V${y+h} H${l} Z`,label:`Part ${i+1} of ${n}, vertical`});}}return out;
 }
 function renderPizza(){
- const model=$('#learn-pizza');if(!model)return;
- const segments=getModelSegments(),colors=['#ffc45f','#ff8da7','#8c83ed','#65d4ae'],ns='http://www.w3.org/2000/svg';
+ const model=$('#learn-pizza');if(!model)return;const segments=getModelSegments(),colors=['#ffc45f','#ff8da7','#8c83ed','#65d4ae','#f4a6dc','#8fd5f0','#f5d66d','#b9e49b','#f6ad8b','#b9b2ff','#8de0ce','#f3a9b9'],ns='http://www.w3.org/2000/svg';
  const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 240 200');svg.setAttribute('class','fraction-model-svg');svg.setAttribute('role','group');svg.setAttribute('aria-label',`${modelShape} divided into ${segments.length} equal parts`);
- segments.forEach((segment,index)=>{
-  const path=document.createElementNS(ns,'path');path.setAttribute('d',segment.d);path.setAttribute('fill',selectedSlices.has(index)?'#6b63df':colors[index%colors.length]);path.setAttribute('stroke','#fff');path.setAttribute('stroke-width','3');path.setAttribute('class','model-segment'+(selectedSlices.has(index)?' is-selected':''));path.setAttribute('role','button');path.setAttribute('tabindex','0');path.setAttribute('aria-label',segment.label);path.setAttribute('aria-pressed',String(selectedSlices.has(index)));
-  const toggle=()=>{if(selectedSlices.has(index))selectedSlices.delete(index);else selectedSlices.add(index);renderPizza();};
-  path.addEventListener('click',toggle);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle();}});svg.append(path);
- });
- if(modelShape==='pizza'){const o=document.createElementNS(ns,'circle');o.setAttribute('cx','120');o.setAttribute('cy','100');o.setAttribute('r','80');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}
- else{const o=document.createElementNS(ns,'rect');o.setAttribute('x',modelShape==='square'?'50':'30');o.setAttribute('y',modelShape==='square'?'25':'45');o.setAttribute('width',modelShape==='square'?'140':'180');o.setAttribute('height',modelShape==='square'?'140':'110');o.setAttribute('rx','2');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}
- model.replaceChildren(svg);const count=selectedSlices.size,total=segments.length,name=modelShape==='pizza'?'pizza':modelShape;
- $('#pizza-readout').textContent=`${count}/${total}`;
- $('#pizza-caption').textContent=count===0?`A ${name} divided into ${total} equal parts. Tap a part to select it.`:count===total?`You selected all ${total} parts: one whole ${name}!`:`You selected ${count} of ${total} equal parts: ${count}/${total}.`;
+ segments.forEach((s,i)=>{const p=document.createElementNS(ns,'path');p.setAttribute('d',s.d);p.setAttribute('fill',selectedSlices.has(i)?'#6b63df':colors[i%colors.length]);p.setAttribute('stroke','#fff');p.setAttribute('stroke-width','3');p.setAttribute('stroke-linejoin','round');p.setAttribute('class','model-segment'+(selectedSlices.has(i)?' is-selected':''));p.setAttribute('role','button');p.setAttribute('tabindex','0');p.setAttribute('aria-label',s.label);p.setAttribute('aria-pressed',String(selectedSlices.has(i)));const toggle=()=>{if(selectedSlices.has(i))selectedSlices.delete(i);else selectedSlices.add(i);renderPizza();};p.addEventListener('click',toggle);p.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle();}});svg.append(p);});
+ if(modelShape==='pizza'){const o=document.createElementNS(ns,'circle');o.setAttribute('cx','120');o.setAttribute('cy','100');o.setAttribute('r','80');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}else{const o=document.createElementNS(ns,'rect');o.setAttribute('x',modelShape==='square'?'50':'30');o.setAttribute('y',modelShape==='square'?'25':'45');o.setAttribute('width',modelShape==='square'?'140':'180');o.setAttribute('height',modelShape==='square'?'140':'110');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}
+ model.replaceChildren(svg);const count=selectedSlices.size,total=segments.length,name=modelShape==='pizza'?'pizza':modelShape;$('#pizza-readout').textContent=`${count}/${total}`;$('#pizza-caption').textContent=count===0?`A ${name} divided into ${total} equal parts. Tap a part to select it.`:count===total?`You selected all ${total} parts: one whole ${name}!`:`You selected ${count} of ${total} equal parts: ${count}/${total}.`;
+ const value=$('#denominator-value'),slider=$('#denominator-slider'),minus=$('#denominator-minus'),plus=$('#denominator-plus');if(value)value.textContent=modelDenominator;if(slider)slider.value=modelDenominator;if(minus)minus.disabled=modelDenominator<=2;if(plus)plus.disabled=modelDenominator>=12;
 }
+function setModelDenominator(value){modelDenominator=Math.max(2,Math.min(12,Number(value)||2));if(modelSplit==='diagonal'&&modelDenominator!==2)modelSplit='vertical';if(modelSplit==='quarters'&&modelDenominator!==4)modelSplit='vertical';selectedSlices.clear();$$('[data-split]').forEach(b=>{const active=b.dataset.split===modelSplit;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});renderPizza();}
 
 function renderPractice() {
   const q = practiceQuestions[practiceIndex % practiceQuestions.length];
@@ -263,7 +242,10 @@ if ($('#fraction-workspace')) {
  $$('.tab-button').forEach(button=>button.addEventListener('click',()=>switchPanel(button.dataset.panel)));
  $$('[data-go]').forEach(button=>button.addEventListener('click',()=>{switchPanel(button.dataset.go);if(button.dataset.go==='practice')renderPractice();}));
  $$('.tab-button').forEach(button=>button.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=$$('.tab-button'),current=tabs.indexOf(button),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next].focus();switchPanel(tabs[next].dataset.panel);}));
- $$('[data-shape]').forEach(button=>button.addEventListener('click',()=>{modelShape=button.dataset.shape;selectedSlices.clear();$$('[data-shape]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
+ $('[data-shape]').forEach(button=>button.addEventListener('click',()=>{modelShape=button.dataset.shape;selectedSlices.clear();$('[data-shape]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
+ const denominatorSlider=$('#denominator-slider');if(denominatorSlider)denominatorSlider.addEventListener('input',()=>setModelDenominator(denominatorSlider.value));
+ const denominatorMinus=$('#denominator-minus');if(denominatorMinus)denominatorMinus.addEventListener('click',()=>setModelDenominator(modelDenominator-1));
+ const denominatorPlus=$('#denominator-plus');if(denominatorPlus)denominatorPlus.addEventListener('click',()=>setModelDenominator(modelDenominator+1));
  $$('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;selectedSlices.clear();$$('[data-split]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
  $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
  $('#practice-next').addEventListener('click',nextPractice);
