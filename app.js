@@ -20,11 +20,16 @@ const practiceQuestions = [
   { question: 'Which fraction is equal to one whole?', parts: 4, selected: 4, answers: ['1/4', '2/4', '3/4', '4/4'], correct: '4/4', hint: 'A whole means every part is included. How many out of 4 is all 4?', explain: '4/4 means all four of the four equal parts: one whole.' }
 ];
 const challengeQuestions = [
-  { fractions: [{n:1,d:2},{n:1,d:4},{n:3,d:4}], correct: '3/4', hint: 'Imagine each fraction as a pizza. Which one covers the most pizza?', explain: '3/4 is the largest: three of four equal parts is more than one half or one quarter.' },
-  { fractions: [{n:2,d:3},{n:1,d:3},{n:3,d:3}], correct: '3/3', hint: 'One fraction fills every part. Which one has the same number on top and bottom?', explain: '3/3 is one whole, so it is larger than 2/3 and 1/3.' },
-  { fractions: [{n:1,d:5},{n:1,d:2},{n:1,d:4}], correct: '1/2', hint: 'When the top number is 1, fewer equal pieces means each piece is bigger.', explain: 'One half is larger than one quarter and one fifth.' },
-  { fractions: [{n:2,d:4},{n:3,d:4},{n:1,d:4}], correct: '3/4', hint: 'All the fractions have the same bottom number. Compare the top numbers.', explain: 'When the denominators match, the fraction with the largest numerator is largest: 3/4.' },
-  { fractions: [{n:2,d:6},{n:4,d:6},{n:1,d:6}], correct: '4/6', hint: 'Each fraction is made from sixths. Which one has the most sixths?', explain: '4/6 has four sixths, which is more than two sixths or one sixth.' }
+  { type:'largest', prompt:'Which fraction is the largest?', fractions:[{n:1,d:2},{n:1,d:4},{n:3,d:4}], choices:['1/2','1/4','3/4'], correct:'3/4', hint:'Imagine each fraction as a pizza. Which one covers the most pizza?', explain:'3/4 is the largest: three of four equal parts is more than one half or one quarter.' },
+  { type:'smallest', prompt:'Which fraction is the smallest?', fractions:[{n:1,d:2},{n:1,d:4},{n:3,d:4}], choices:['1/2','1/4','3/4'], correct:'1/4', hint:'All three fractions have the same whole. Which fraction covers the least?', explain:'1/4 is the smallest because one quarter is less than one half and three quarters.' },
+  { type:'equivalent', prompt:'Which fraction is equal to 2/3?', expression:'2/3 = ?', choices:['3/4','4/6','2/6','3/6'], correct:'4/6', hint:'To make an equivalent fraction, multiply the top and bottom numbers by the same number.', explain:'2/3 = 4/6 because both the numerator and denominator are multiplied by 2.' },
+  { type:'compare', prompt:'Which fraction is smaller?', fractions:[{n:3,d:5},{n:3,d:8}], choices:['3/5','3/8'], correct:'3/8', hint:'Both fractions have 3 parts shaded. Eighths are smaller pieces than fifths.', explain:'3/8 is smaller than 3/5 because each eighth is smaller than each fifth.' },
+  { type:'missing', prompt:'Find the missing number.', expression:'1/2 = ?/8', choices:['2','3','4','6'], correct:'4', hint:'The denominator changes from 2 to 8. What did you multiply it by? Multiply the numerator by the same amount.', explain:'1/2 = 4/8. Both the numerator and denominator are multiplied by 4.' },
+  { type:'false-statement', prompt:'Which statement is NOT correct?', choices:['2/4 = 1/2','1/3 = 2/6','3/5 = 3/4','4/8 = 1/2'], correct:'3/5 = 3/4', hint:'Check each pair. Equivalent fractions name the same amount, even if their numbers look different.', explain:'3/5 is not equal to 3/4. Three fifths and three quarters are different amounts.' },
+  { type:'number-line', prompt:'Which fraction is halfway between 0 and 1?', choices:['1/4','1/2','3/4','1/3'], correct:'1/2', hint:'Halfway means the same distance from 0 as from 1.', explain:'1/2 is exactly halfway between 0 and 1 on the number line.' },
+  { type:'equivalent', prompt:'Which fraction is equal to 1/2?', expression:'1/2 = ?', choices:['2/3','2/4','3/4','1/4'], correct:'2/4', hint:'One half means half of the equal parts are included.', explain:'2/4 is equal to 1/2 because two of four equal parts make half a whole.' },
+  { type:'smallest', prompt:'Which fraction is the smallest?', fractions:[{n:2,d:6},{n:5,d:6},{n:1,d:6}], choices:['2/6','5/6','1/6'], correct:'1/6', hint:'All the fractions are sixths. Compare the number of sixths in each.', explain:'1/6 is the smallest because one sixth is less than two sixths and five sixths.' },
+  { type:'compare', prompt:'Which fraction is larger?', fractions:[{n:2,d:5},{n:4,d:5}], choices:['2/5','4/5'], correct:'4/5', hint:'Both fractions have fifths. Compare the top numbers.', explain:'4/5 is larger than 2/5 because four fifths is more than two fifths.' }
 ];
 
 function loadProgress() {
@@ -199,27 +204,64 @@ function answerMiniPractice(answer,clicked){
  $$('.answer-button',$('#practice-game-answers')).forEach(b=>{b.disabled=true;if(b.textContent===(activePracticeMode==='match'?q.n+'/'+q.d:q.correct))b.classList.add('correct');});if(clicked&&!correct)clicked.classList.add('incorrect');finishMiniPractice(correct,q.explain);
 }
 function nextMiniPractice(){const qs=practiceActivities[activePracticeMode].questions;activePracticeQuestion=(activePracticeQuestion+1)%qs.length;renderPracticeQuestion();}
+function makeChallengeFractionCard(f) {
+  const value = `${f.n}/${f.d}`;
+  const card = document.createElement('div');
+  card.className = 'fraction-choice-visual';
+  const bar = document.createElement('div'); bar.className = 'fraction-bar';
+  bar.setAttribute('role', 'img');
+  bar.setAttribute('aria-label', `${f.n} of ${f.d} parts shaded`);
+  for (let i = 0; i < f.d; i++) {
+    const part = document.createElement('span');
+    if (i < f.n) part.className = 'filled';
+    bar.append(part);
+  }
+  const label = document.createElement('strong'); label.textContent = value;
+  card.append(bar, label);
+  return card;
+}
 function renderChallenge() {
   const q = challengeQuestions[challengeIndex % challengeQuestions.length];
   challengeAnswered = false;
-  $('#challenge-question').textContent = 'Which fraction is the largest?';
+  $('#challenge-question').textContent = q.prompt;
   const visuals = $('#challenge-visuals');
   const answers = $('#challenge-answers');
   visuals.replaceChildren(); answers.replaceChildren();
-  q.fractions.forEach(f => {
-    const value = `${f.n}/${f.d}`;
-    const card = document.createElement('div');
-    card.className = 'fraction-choice-visual';
-    const bar = document.createElement('div'); bar.className = 'fraction-bar';
-    for (let i = 0; i < f.d; i++) {
-      const part = document.createElement('span');
-      if (i < f.n) part.className = 'filled';
-      bar.append(part);
-    }
-    const label = document.createElement('strong'); label.textContent = value;
-    card.append(bar, label); visuals.append(card);
+  visuals.className = 'challenge-visuals';
+  if (q.fractions) {
+    q.fractions.forEach(f => visuals.append(makeChallengeFractionCard(f)));
+  } else if (q.type === 'number-line') {
+    const line = document.createElement('div');
+    line.className = 'challenge-number-line';
+    line.setAttribute('role', 'img');
+    line.setAttribute('aria-label', 'A number line from zero to one, divided into four equal intervals');
+    const track = document.createElement('div'); track.className = 'number-line-track';
+    [0, 25, 50, 75, 100].forEach((position, index) => {
+      const mark = document.createElement('span');
+      mark.className = 'number-line-mark' + (index === 2 ? ' midpoint' : '');
+      mark.style.left = position + '%';
+      const label = document.createElement('span');
+      label.className = 'number-line-label';
+      label.textContent = index === 0 ? '0' : index === 4 ? '1' : '';
+      label.style.left = position + '%';
+      track.append(mark, label);
+    });
+    line.append(track);
+    const note = document.createElement('p');
+    note.textContent = 'Look at the middle point between 0 and 1.';
+    line.append(note);
+    visuals.append(line);
+  } else {
+    const expression = document.createElement('div');
+    expression.className = 'challenge-expression';
+    expression.textContent = q.expression || 'Think carefully about each statement.';
+    visuals.append(expression);
+  }
+  [...q.choices].sort(() => Math.random() - 0.5).forEach(value => {
     const button = document.createElement('button');
-    button.type = 'button'; button.className = 'answer-button'; button.textContent = value;
+    button.type = 'button';
+    button.className = 'answer-button challenge-answer';
+    button.textContent = value;
     button.addEventListener('click', () => answerChallenge(value, button));
     answers.append(button);
   });
@@ -228,6 +270,9 @@ function renderChallenge() {
   $('#challenge-next').disabled = true;
   $('#challenge-hint-message').hidden = true;
   $('#challenge-hint').disabled = false;
+  $('#challenge-answers').setAttribute('aria-label', 'Choose your answer');
+  const counter = $('#challenge-counter');
+  if (counter) counter.textContent = `QUESTION ${challengeIndex % challengeQuestions.length + 1} OF ${challengeQuestions.length}`;
 }
 function answerChallenge(answer, clicked) {
   if (challengeAnswered) return;
