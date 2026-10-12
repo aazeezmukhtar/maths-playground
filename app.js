@@ -51,10 +51,11 @@ function renderProgress() {
   const progressBar = $('#fraction-progress-bar');
   const progressLabel = $('#fraction-progress-label');
   const answered = progress.practiceAnswered;
-  const percent = Math.min(100, Math.round((Math.min(answered, practiceQuestions.length) / practiceQuestions.length) * 100));
+  const practiceTotal = 16;
+  const percent = Math.min(100, Math.round((Math.min(answered, practiceTotal) / practiceTotal) * 100));
   if (progressBar) progressBar.style.width = percent + '%';
   if (progressLabel) progressLabel.textContent = answered
-    ? `${Math.min(answered, practiceQuestions.length)} of ${practiceQuestions.length} practice questions tried`
+    ? `${Math.min(answered, practiceTotal)} of ${practiceTotal} practice questions tried`
     : 'Your first adventure awaits';
 }
 
