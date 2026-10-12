@@ -47,15 +47,12 @@
       </div>
 
       <div class="activity-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" data-activity="practice" hidden>
-        <div class="quiz-card">
-          <div class="quiz-topline"><span class="lesson-step">WARM-UP ROUND</span><span class="question-counter" id="practice-counter">QUESTION 1</span></div>
-          <div class="quiz-progress"><span id="practice-progress"></span></div>
-          <h3 id="practice-question">A chocolate bar has 4 equal pieces. You eat 1 piece. What fraction did you eat?</h3>
-          <div class="question-visual" id="practice-visual" aria-hidden="true"></div>
-          <div class="answer-grid" id="practice-answers" role="group" aria-label="Choose your answer"></div>
-          <div class="feedback-message" id="practice-feedback" role="status" aria-live="polite" hidden></div>
-          <div class="quiz-actions"><button class="text-button" id="practice-hint" type="button">💡 Give me a hint</button><button class="primary-button" id="practice-next" type="button" disabled>Next question →</button></div>
-          <div class="hint-message" id="practice-hint-message" hidden></div>
+        <div class="practice-menu-wrap"><div class="practice-menu-heading"><span class="lesson-step">CHOOSE YOUR MINI-GAME</span><h3>How do you want to practise?</h3><p>Pick a game. Each one helps you master fractions in a different way.</p></div><div class="practice-activity-grid" id="practice-menu"></div></div>
+        <div class="quiz-card practice-game" id="practice-game" hidden><button class="practice-back-button" id="practice-menu-back" type="button">← All practice games</button>
+          <div class="quiz-topline"><span class="lesson-step" id="practice-game-title">MINI-GAME</span><span class="question-counter" id="practice-game-count">ROUND 1</span></div><div class="quiz-progress"><span id="practice-game-progress"></span></div>
+          <h3 id="practice-game-prompt"></h3><div class="practice-game-visual" id="practice-game-visual"></div><div class="practice-interactive-visual" id="practice-interactive-visual" hidden></div><p class="practice-live-count" id="practice-live-count" aria-live="polite"></p>
+          <div class="answer-grid" id="practice-game-answers" role="group" aria-label="Choose your answer"></div><button class="primary-button practice-check-button" id="practice-check-shading" type="button" hidden>Check my shading →</button>
+          <div class="feedback-message" id="practice-game-feedback" role="status" aria-live="polite" hidden></div><div class="quiz-actions"><button class="text-button" id="practice-game-hint" type="button">💡 Give me a hint</button><button class="primary-button" id="practice-game-next" type="button" disabled>Next question →</button></div><div class="hint-message" id="practice-game-hint-message" hidden></div>
         </div>
       </div>
 
