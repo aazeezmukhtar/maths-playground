@@ -213,34 +213,37 @@ function bindHint(buttonId, messageId, getHint) {
   });
 }
 
-$('#open-fractions').addEventListener('click', () => openWorkspace('learn'));
-$('#close-fractions').addEventListener('click', () => {
-  $('#fraction-workspace').hidden = true;
-  $('#fractions').scrollIntoView({ behavior: 'smooth', block: 'center' });
-});
-$$('.tab-button').forEach(button => button.addEventListener('click', () => switchPanel(button.dataset.panel)));
-$$('[data-go]').forEach(button => button.addEventListener('click', () => {
-  switchPanel(button.dataset.go);
-  if (button.dataset.go === 'practice') renderPractice();
-}));
-$$('.tab-button').forEach(button => button.addEventListener('keydown', event => {
-  if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-  event.preventDefault();
-  const tabs = $$('.tab-button');
-  const current = tabs.indexOf(button);
-  const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-  tabs[next].focus(); switchPanel(tabs[next].dataset.panel);
-}));
-$('#pizza-reset').addEventListener('click', () => { selectedSlices.clear(); renderPizza(); });
-$('#practice-next').addEventListener('click', nextPractice);
-$('#challenge-next').addEventListener('click', () => { challengeIndex++; renderChallenge(); });
+if ($('#fraction-workspace')) {
+  $('#open-fractions').addEventListener('click', () => openWorkspace('learn'));
+  $('#close-fractions').addEventListener('click', () => {
+    $('#fraction-workspace').hidden = true;
+    $('#fractions').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  $$('.tab-button').forEach(button => button.addEventListener('click', () => switchPanel(button.dataset.panel)));
+  $$('[data-go]').forEach(button => button.addEventListener('click', () => {
+    switchPanel(button.dataset.go);
+    if (button.dataset.go === 'practice') renderPractice();
+  }));
+  $$('.tab-button').forEach(button => button.addEventListener('keydown', event => {
+    if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
+    event.preventDefault();
+    const tabs = $$('.tab-button');
+    const current = tabs.indexOf(button);
+    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+    tabs[next].focus(); switchPanel(tabs[next].dataset.panel);
+  }));
+  $('#pizza-reset').addEventListener('click', () => { selectedSlices.clear(); renderPizza(); });
+  $('#practice-next').addEventListener('click', nextPractice);
+  $('#challenge-next').addEventListener('click', () => { challengeIndex++; renderChallenge();
+} });
 bindHint('#practice-hint', '#practice-hint-message', () => practiceQuestions[practiceIndex % practiceQuestions.length].hint);
 bindHint('#challenge-hint', '#challenge-hint-message', () => challengeQuestions[challengeIndex % challengeQuestions.length].hint);
-$('#sound-toggle').addEventListener('click', () => {
+const soundToggle = $('#sound-toggle');
+if (soundToggle) soundToggle.addEventListener('click', () => {
   soundEnabled = !soundEnabled;
-  $('#sound-toggle').textContent = soundEnabled ? '🔊' : '🔈';
-  $('#sound-toggle').setAttribute('aria-pressed', String(soundEnabled));
-  $('#sound-toggle').setAttribute('aria-label', soundEnabled ? 'Turn sound effects off' : 'Turn sound effects on');
+  soundToggle.textContent = soundEnabled ? '🔊' : '🔈';
+  soundToggle.setAttribute('aria-pressed', String(soundEnabled));
+  soundToggle.setAttribute('aria-label', soundEnabled ? 'Turn sound effects off' : 'Turn sound effects on');
   if (soundEnabled) playTone(true);
 });
 $('#reset-progress').addEventListener('click', () => {
@@ -254,7 +257,12 @@ renderPractice();
 renderChallenge();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(() => {
-    // The app remains usable if offline installation is unavailable.
-  }));
+  window.addEventListener('load', () => {
+    const nestedModulePage = location.pathname.includes('/modules/');
+    const scriptUrl = nestedModulePage ? '../../service-worker.js' : './service-worker.js';
+    const scope = nestedModulePage ? '../../' : './';
+    navigator.serviceWorker.register(scriptUrl, { scope }).catch(() => {
+      // The app remains usable if offline installation is unavailable.
+    });
+  });
 }
