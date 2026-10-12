@@ -1,14 +1,16 @@
 # Maths Playground
 
-A playful, mobile-friendly maths learning app for primary learners (ages 7–12), starting with interactive fractions.
+A playful, mobile-friendly maths learning app for primary learners (ages 7–12). Each learning module has its own page so learners can move between adventures without scrolling through one long page.
 
 ## Current MVP
 
+- **Home dashboard:** module navigation, points total, and a quick view of learning activity.
 - **Fraction Fun — Learn:** visual explanation of numerator and denominator, plus a tappable pizza model.
 - **Fraction Fun — Practise:** multiple-choice questions, hints, feedback, and points.
 - **Fraction Fun — Challenge:** compare fractions using visual fraction bars.
-- Local progress saved on the learner's device.
-- Responsive layout, keyboard-friendly tabs, accessible feedback, and optional sound effects.
+- **Coming-soon module pages:** Number Explorers, Shape Safari, and Brainy Challenges have their own routes and can be built independently.
+- Local progress saved on the learner's device and shared between pages on the same site.
+- Responsive layout, keyboard-friendly tabs, accessible feedback, and optional sound effects on the home page.
 - PWA manifest and service worker for offline app-shell caching.
 - No account, backend, advertisements, or tracking.
 
@@ -24,14 +26,17 @@ Then open `http://localhost:8000`.
 
 You can also deploy the repository as a static site on GitHub Pages or another static hosting provider. For the best first-load experience, open it online once before trying it offline. Google Fonts are optional and may not load without an internet connection.
 
-## Files
+## Structure
 
-- `index.html` — app structure and learning panels
-- `styles.css` — responsive visual design
-- `app.js` — activity logic and local progress
+- `index.html` — short home dashboard and module directory
+- `modules/fractions/index.html` — Fraction Fun learning, practice, and challenge workspace
+- `modules/numbers/index.html` — Number Explorers coming-soon page
+- `modules/geometry/index.html` — Shape Safari coming-soon page
+- `modules/challenges/index.html` — Brainy Challenges coming-soon page
+- `styles.css` — shared responsive design and page layouts
+- `app.js` — activity logic and shared local progress
 - `manifest.webmanifest` — installable app metadata
 - `service-worker.js` — offline app-shell caching
-- `icon.svg` — app icon
 
 ## Planned modules
 
@@ -42,4 +47,4 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 
 ## Notes
 
-Progress is stored in the browser on the current device. It does not sync between devices. This is an early MVP; test the learning activities and offline behaviour on target phones and browsers before classroom-wide use.
+Progress is stored in browser local storage on the current device and is shared by the app's pages on the same origin. It does not sync between devices. This is an early MVP; test navigation, learning activities, and offline behaviour on target phones and browsers before classroom-wide use.
