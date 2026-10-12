@@ -38,12 +38,26 @@ function saveProgress() {
   renderProgress();
 }
 function renderProgress() {
-  $('#total-points').textContent = progress.points;
+  const totalPoints = $('#total-points');
+  if (totalPoints) totalPoints.textContent = progress.points;
+
+  const dashboardPoints = $('#dashboard-points');
+  if (dashboardPoints) dashboardPoints.textContent = progress.points;
+  const dashboardPractice = $('#dashboard-practice');
+  if (dashboardPractice) dashboardPractice.textContent = progress.practiceAnswered;
+  const dashboardChallenges = $('#dashboard-challenges');
+  if (dashboardChallenges) dashboardChallenges.textContent = progress.challengeAnswered;
+
+  const progressBar = $('#fraction-progress-bar');
+  const progressLabel = $('#fraction-progress-label');
   const answered = progress.practiceAnswered;
-  const percent = Math.min(100, Math.round((answered / practiceQuestions.length) * 100));
-  $('#fraction-progress-bar').style.width = percent + '%';
-  $('#fraction-progress-label').textContent = answered ? `${Math.min(answered, practiceQuestions.length)} of ${practiceQuestions.length} practice questions tried` : 'Your first adventure awaits';
+  const percent = Math.min(100, Math.round((Math.min(answered, practiceQuestions.length) / practiceQuestions.length) * 100));
+  if (progressBar) progressBar.style.width = percent + '%';
+  if (progressLabel) progressLabel.textContent = answered
+    ? `${Math.min(answered, practiceQuestions.length)} of ${practiceQuestions.length} practice questions tried`
+    : 'Your first adventure awaits';
 }
+
 function showToast(message) {
   const toast = $('#toast');
   toast.textContent = message;
@@ -214,10 +228,8 @@ function bindHint(buttonId, messageId, getHint) {
 }
 
 if ($('#fraction-workspace')) {
-  $('#open-fractions').addEventListener('click', () => openWorkspace('learn'));
   $('#close-fractions').addEventListener('click', () => {
-    $('#fraction-workspace').hidden = true;
-    $('#fractions').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    window.location.href = '../../';
   });
   $$('.tab-button').forEach(button => button.addEventListener('click', () => switchPanel(button.dataset.panel)));
   $$('[data-go]').forEach(button => button.addEventListener('click', () => {
@@ -230,14 +242,28 @@ if ($('#fraction-workspace')) {
     const tabs = $$('.tab-button');
     const current = tabs.indexOf(button);
     const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-    tabs[next].focus(); switchPanel(tabs[next].dataset.panel);
+    tabs[next].focus();
+    switchPanel(tabs[next].dataset.panel);
   }));
   $('#pizza-reset').addEventListener('click', () => { selectedSlices.clear(); renderPizza(); });
   $('#practice-next').addEventListener('click', nextPractice);
-  $('#challenge-next').addEventListener('click', () => { challengeIndex++; renderChallenge();
-} });
-bindHint('#practice-hint', '#practice-hint-message', () => practiceQuestions[practiceIndex % practiceQuestions.length].hint);
-bindHint('#challenge-hint', '#challenge-hint-message', () => challengeQuestions[challengeIndex % challengeQuestions.length].hint);
+  $('#challenge-next').addEventListener('click', () => { challengeIndex++; renderChallenge(); });
+  bindHint('#practice-hint', '#practice-hint-message', () => practiceQuestions[practiceIndex % practiceQuestions.length].hint);
+  bindHint('#challenge-hint', '#challenge-hint-message', () => challengeQuestions[challengeIndex % challengeQuestions.length].hint);
+  $('#reset-progress').addEventListener('click', () => {
+    if (!window.confirm('Reset your points and learning progress on this device?')) return;
+    progress = { ...defaultProgress };
+    practiceIndex = 0;
+    challengeIndex = 0;
+    saveProgress();
+    renderPractice();
+    renderChallenge();
+    showToast('Progress reset. A fresh start! 🌱');
+  });
+  renderPizza();
+  renderPractice();
+  renderChallenge();
+}
 const soundToggle = $('#sound-toggle');
 if (soundToggle) soundToggle.addEventListener('click', () => {
   soundEnabled = !soundEnabled;
@@ -246,15 +272,7 @@ if (soundToggle) soundToggle.addEventListener('click', () => {
   soundToggle.setAttribute('aria-label', soundEnabled ? 'Turn sound effects off' : 'Turn sound effects on');
   if (soundEnabled) playTone(true);
 });
-$('#reset-progress').addEventListener('click', () => {
-  if (!window.confirm('Reset your points and learning progress on this device?')) return;
-  progress = { ...defaultProgress }; practiceIndex = 0; challengeIndex = 0;
-  saveProgress(); renderPractice(); renderChallenge(); showToast('Progress reset. A fresh start! 🌱');
-});
 renderProgress();
-renderPizza();
-renderPractice();
-renderChallenge();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
   window.addEventListener('load', () => {
