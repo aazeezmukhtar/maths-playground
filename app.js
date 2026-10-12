@@ -123,65 +123,65 @@ function renderPizza(){
 }
 function setModelDenominator(value){modelDenominator=Math.max(2,Math.min(12,Math.round(Number(value)||2)));if(modelSplit==='diagonal'&&modelDenominator!==2)modelSplit='vertical';if(modelSplit==='quarters'&&modelDenominator!==4)modelSplit='vertical';selectedSlices.clear();$$('[data-split]').forEach(b=>{const active=b.dataset.split===modelSplit;b.classList.toggle('is-active',active);b.setAttribute('aria-pressed',String(active));});renderPizza();}
 
-function renderPractice() {
-  const q = practiceQuestions[practiceIndex % practiceQuestions.length];
-  practiceAnswered = false;
-  $('#practice-counter').textContent = `QUESTION ${(practiceIndex % practiceQuestions.length) + 1} OF ${practiceQuestions.length}`;
-  $('#practice-progress').style.width = `${((practiceIndex % practiceQuestions.length) / practiceQuestions.length) * 100}%`;
-  $('#practice-question').textContent = q.question;
-  $('#practice-visual').replaceChildren();
-  for (let i = 0; i < q.parts; i++) {
-    const piece = document.createElement('span');
-    piece.className = 'chocolate-piece' + (i >= q.selected ? ' eaten' : '');
-    piece.textContent = i < q.selected ? '✦' : '';
-    piece.setAttribute('aria-hidden', 'true');
-    $('#practice-visual').append(piece);
-  }
-  const answers = $('#practice-answers');
-  answers.replaceChildren();
-  q.answers.forEach(answer => {
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = 'answer-button'; button.textContent = answer;
-    button.addEventListener('click', () => answerPractice(answer, button));
-    answers.append(button);
-  });
-  $('#practice-feedback').hidden = true;
-  $('#practice-feedback').className = 'feedback-message';
-  $('#practice-next').disabled = true;
-  $('#practice-next').textContent = practiceIndex % practiceQuestions.length === practiceQuestions.length - 1 ? 'Finish round →' : 'Next question →';
-  $('#practice-hint-message').hidden = true;
-  $('#practice-hint').disabled = false;
+const practiceActivities = {
+  shade:{title:'Shade the Fraction',icon:'🎨',description:'Tap the right number of pieces to show a fraction.',questions:[
+    {n:1,d:2,hint:'The top number tells you how many pieces to shade.',explain:'1 out of 2 equal pieces is one half.'},
+    {n:3,d:4,hint:'Count three pieces, then leave one unshaded.',explain:'3 of the 4 equal pieces are shaded, so the fraction is 3/4.'},
+    {n:2,d:5,hint:'Shade exactly two of the five equal pieces.',explain:'2 shaded pieces out of 5 equal pieces is 2/5.'},
+    {n:4,d:6,hint:'Shade four pieces. The total number of pieces stays six.',explain:'4 of the 6 equal pieces are shaded, so the fraction is 4/6.'}]},
+  match:{title:'Match the Fraction',icon:'🧩',description:'Read the picture and choose the fraction it shows.',questions:[
+    {n:1,d:3,hint:'Count the coloured parts first, then count all the equal parts.',explain:'One of three equal parts is 1/3.'},
+    {n:3,d:5,hint:'The numerator is the number of coloured parts.',explain:'Three coloured parts out of five equal parts is 3/5.'},
+    {n:2,d:4,hint:'There are four parts altogether. How many are coloured?',explain:'Two of four equal parts is 2/4, which is also one half.'},
+    {n:5,d:8,hint:'Count the coloured parts and use the total number of parts as the denominator.',explain:'Five coloured parts out of eight is 5/8.'}]},
+  compare:{title:'Which Is Bigger?',icon:'⚖️',description:'Compare two fractions and choose the larger one.',questions:[
+    {a:{n:1,d:2},b:{n:1,d:4},correct:'1/2',hint:'When the top number is the same, each part is bigger when the bottom number is smaller.',explain:'One half is bigger than one quarter.'},
+    {a:{n:2,d:5},b:{n:4,d:5},correct:'4/5',hint:'Both fractions have fifths. Compare the top numbers.',explain:'Four fifths is bigger than two fifths.'},
+    {a:{n:2,d:3},b:{n:2,d:6},correct:'2/3',hint:'Both have two parts shaded. Thirds are bigger pieces than sixths.',explain:'2/3 is bigger than 2/6 because thirds are larger than sixths.'},
+    {a:{n:3,d:8},b:{n:5,d:8},correct:'5/8',hint:'The denominators are the same, so compare the numerators.',explain:'Five eighths is bigger than three eighths.'}]},
+  detective:{title:'Fraction Detective',icon:'🕵️',description:'Find the missing number and solve the fraction mystery.',questions:[
+    {prompt:'1/2 = ?/4',correct:'2',answers:['1','2','3','4'],hint:'What number multiplied by 2 gives 4? Multiply the top number by the same amount.',explain:'1/2 equals 2/4. Multiply both the top and bottom numbers by 2.'},
+    {prompt:'3/6 = 1/?',correct:'2',answers:['2','3','4','6'],hint:'3/6 simplifies when both numbers are divided by 3.',explain:'3/6 is equal to 1/2, so the missing number is 2.'},
+    {prompt:'? / 8 = 1/2',correct:'4',answers:['2','3','4','6'],hint:'Half of 8 equal parts is 4 parts.',explain:'4/8 is equal to 1/2.'},
+    {prompt:'2/4 = ?/8',correct:'4',answers:['2','3','4','6'],hint:'The denominator doubled from 4 to 8. Double the numerator too.',explain:'2/4 equals 4/8 because both fractions represent one half.'}]}
+};
+let activePracticeMode=null,activePracticeQuestion=0,shadeSelection=new Set(),activePracticeAnswered=false;
+function renderPracticeMenu(){
+ const menu=$('#practice-menu'),game=$('#practice-game');if(!menu||!game)return;menu.hidden=false;game.hidden=true;menu.replaceChildren();
+ Object.entries(practiceActivities).forEach(([key,a])=>{const card=document.createElement('button');card.type='button';card.className='practice-activity-card';card.innerHTML='<span class="practice-activity-icon" aria-hidden="true"></span><span class="practice-activity-copy"><strong></strong><small></small></span><span class="practice-activity-arrow" aria-hidden="true">→</span>';$('.practice-activity-icon',card).textContent=a.icon;$('.practice-activity-copy strong',card).textContent=a.title;$('.practice-activity-copy small',card).textContent=a.description;card.addEventListener('click',()=>startPracticeActivity(key));menu.append(card);});
 }
-function answerPractice(answer, clicked) {
-  if (practiceAnswered) return;
-  practiceAnswered = true;
-  const q = practiceQuestions[practiceIndex % practiceQuestions.length];
-  const correct = answer === q.correct;
-  $$('.answer-button', $('#practice-answers')).forEach(button => {
-    button.disabled = true;
-    if (button.textContent === q.correct) button.classList.add('correct');
-  });
-  if (!correct) clicked.classList.add('incorrect');
-  const feedback = $('#practice-feedback');
-  feedback.hidden = false;
-  feedback.className = 'feedback-message ' + (correct ? 'good' : 'try-again');
-  feedback.textContent = (correct ? 'Brilliant! 🌟 ' : 'Good try! 💛 ') + q.explain;
-  $('#practice-next').disabled = false;
-  $('#practice-hint').disabled = true;
-  progress.practiceAnswered++;
-  if (correct) { progress.points += 10; progress.practiceCorrect++; }
-  saveProgress(); playTone(correct);
+function startPracticeActivity(mode){activePracticeMode=mode;activePracticeQuestion=0;renderPracticeQuestion();$('#practice-menu').hidden=true;$('#practice-game').hidden=false;$('#practice-game').scrollIntoView({behavior:'smooth',block:'nearest'});}
+function makeFractionPicture(n,d,interactive=false){
+ const wrap=document.createElement('div');wrap.className='practice-fraction-picture';wrap.setAttribute('role',interactive?'group':'img');wrap.setAttribute('aria-label',`${n} of ${d} equal parts shaded`);
+ for(let i=0;i<d;i++){const piece=document.createElement(interactive?'button':'span');if(interactive){piece.type='button';piece.className='shade-piece';piece.setAttribute('aria-label',`Part ${i+1}`);piece.setAttribute('aria-pressed',String(shadeSelection.has(i)));piece.addEventListener('click',()=>{if(activePracticeAnswered)return;if(shadeSelection.has(i))shadeSelection.delete(i);else shadeSelection.add(i);renderShadePieces();});piece.classList.toggle('is-shaded',shadeSelection.has(i));}else{piece.className='picture-piece'+(i<n?' filled':'');piece.textContent=i<n?'●':'';}wrap.append(piece);}return wrap;
 }
-function nextPractice() {
-  practiceIndex++;
-  if (practiceIndex % practiceQuestions.length === 0) {
-    showToast('Round complete! You can practise again or try the challenge.');
-    switchPanel('challenge');
-    renderChallenge();
-    return;
-  }
-  renderPractice();
+function renderShadePieces(){const holder=$('#practice-interactive-visual');if(!holder||activePracticeMode!=='shade')return;const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];holder.replaceChildren(makeFractionPicture(q.n,q.d,true));$('#practice-live-count').textContent=`${shadeSelection.size} of ${q.d} pieces selected`;}
+function renderPracticeQuestion(){
+ if(!activePracticeMode)return renderPracticeMenu();const a=practiceActivities[activePracticeMode],qs=a.questions,q=qs[activePracticeQuestion%qs.length];activePracticeAnswered=false;shadeSelection=new Set();
+ $('#practice-game-title').textContent=a.title;$('#practice-game-count').textContent=`ROUND ${activePracticeQuestion%qs.length+1} OF ${qs.length}`;$('#practice-game-progress').style.width=`${activePracticeQuestion%qs.length/qs.length*100}%`;
+ $('#practice-game-prompt').textContent=activePracticeMode==='shade'?`Show ${q.n}/${q.d} by shading the pieces.`:activePracticeMode==='match'?'Which fraction does this picture show?':activePracticeMode==='compare'?'Which fraction is bigger?':q.prompt;
+ const visual=$('#practice-game-visual'),interactive=$('#practice-interactive-visual'),answers=$('#practice-game-answers');visual.replaceChildren();interactive.replaceChildren();interactive.hidden=activePracticeMode!=='shade';$('#practice-live-count').textContent='';
+ if(activePracticeMode==='shade')renderShadePieces();
+ else if(activePracticeMode==='match')visual.append(makeFractionPicture(q.n,q.d));
+ else if(activePracticeMode==='compare'){[q.a,q.b].forEach(f=>{const card=document.createElement('div');card.className='compare-fraction-card';card.append(makeFractionPicture(f.n,f.d));const label=document.createElement('strong');label.textContent=`${f.n}/${f.d}`;card.append(label);visual.append(card);});}
+ else{const clue=document.createElement('div');clue.className='detective-clue';clue.textContent='🔎 Find the missing number';visual.append(clue);}
+ answers.replaceChildren();$('#practice-check-shading').hidden=activePracticeMode!=='shade';
+ if(activePracticeMode!=='shade'){
+  let choices=activePracticeMode==='match'?[q.n+'/'+q.d,'1/'+q.d,Math.max(1,q.n-1)+'/'+q.d,q.n+'/'+Math.min(12,q.d+1)]:activePracticeMode==='compare'?[q.a.n+'/'+q.a.d,q.b.n+'/'+q.b.d]:q.answers.slice();
+  choices=[...new Set(choices)];for(let i=1;choices.length<4;i++)choices.push(activePracticeMode==='detective'?String(i):`${Math.max(1,q.n-1)}/${q.d}`);choices=[...new Set(choices)];if(activePracticeMode==='match'&&!choices.includes(q.n+'/'+q.d))choices[0]=q.n+'/'+q.d;
+  choices.sort(()=>Math.random()-.5).forEach(answer=>{const b=document.createElement('button');b.type='button';b.className='answer-button';b.textContent=answer;b.addEventListener('click',()=>answerMiniPractice(answer,b));answers.append(b);});
+ }
+ $('#practice-game-feedback').hidden=true;$('#practice-game-feedback').className='feedback-message';$('#practice-game-next').disabled=true;$('#practice-game-next').textContent=activePracticeQuestion%qs.length===qs.length-1?'Play another round →':'Next question →';$('#practice-game-hint-message').hidden=true;$('#practice-game-hint').disabled=false;$('#practice-check-shading').disabled=false;
 }
+function finishMiniPractice(correct,explain){
+ if(activePracticeMode==='shade'){const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];$$('.shade-piece',$('#practice-interactive-visual')).forEach(b=>b.disabled=true);$('#practice-check-shading').disabled=true;correct=shadeSelection.size===q.n;}
+ activePracticeAnswered=true;const feedback=$('#practice-game-feedback');feedback.hidden=false;feedback.className='feedback-message '+(correct?'good':'try-again');feedback.textContent=(correct?'Brilliant! 🌟 ':'Good try! 💛 ')+explain;$('#practice-game-next').disabled=false;$('#practice-game-hint').disabled=true;progress.practiceAnswered++;if(correct){progress.points+=10;progress.practiceCorrect++;}saveProgress();playTone(correct);
+}
+function answerMiniPractice(answer,clicked){
+ if(activePracticeAnswered)return;const q=practiceActivities[activePracticeMode].questions[activePracticeQuestion%practiceActivities[activePracticeMode].questions.length],correct=String(answer)===(activePracticeMode==='match'?q.n+'/'+q.d:q.correct);activePracticeAnswered=true;
+ $$('.answer-button',$('#practice-game-answers')).forEach(b=>{b.disabled=true;if(b.textContent===(activePracticeMode==='match'?q.n+'/'+q.d:q.correct))b.classList.add('correct');});if(clicked&&!correct)clicked.classList.add('incorrect');finishMiniPractice(correct,q.explain);
+}
+function nextMiniPractice(){const qs=practiceActivities[activePracticeMode].questions;activePracticeQuestion=(activePracticeQuestion+1)%qs.length;renderPracticeQuestion();}
 function renderChallenge() {
   const q = challengeQuestions[challengeIndex % challengeQuestions.length];
   challengeAnswered = false;
@@ -240,7 +240,7 @@ function bindHint(buttonId, messageId, getHint) {
 
 if ($('#fraction-workspace')) {
  $$('.tab-button').forEach(button=>button.addEventListener('click',()=>switchPanel(button.dataset.panel)));
- $$('[data-go]').forEach(button=>button.addEventListener('click',()=>{switchPanel(button.dataset.go);if(button.dataset.go==='practice')renderPractice();}));
+ $$('[data-go]').forEach(button=>button.addEventListener('click',()=>{switchPanel(button.dataset.go);if(button.dataset.go==='practice')renderPracticeMenu();}));
  $$('.tab-button').forEach(button=>button.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=$$('.tab-button'),current=tabs.indexOf(button),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next].focus();switchPanel(tabs[next].dataset.panel);}));
  $$('[data-shape]').forEach(button=>button.addEventListener('click',()=>{modelShape=button.dataset.shape;selectedSlices.clear();$$('[data-shape]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
  const denominatorSlider=$('#denominator-slider');if(denominatorSlider)denominatorSlider.addEventListener('input',()=>setModelDenominator(denominatorSlider.value));
@@ -249,11 +249,15 @@ if ($('#fraction-workspace')) {
  $$('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;if(modelSplit==='diagonal')modelDenominator=2;else if(modelSplit==='quarters')modelDenominator=4;selectedSlices.clear();$$('[data-split]').forEach(item=>{const active=item.dataset.split===modelSplit;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
  $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
  $('#practice-next').addEventListener('click',nextPractice);
+ $('#practice-menu-back').addEventListener('click',()=>{activePracticeMode=null;renderPracticeMenu();});
+ $('#practice-game-next').addEventListener('click',nextMiniPractice);
+ $('#practice-check-shading').addEventListener('click',()=>{const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];finishMiniPractice(shadeSelection.size===q.n,q.explain);});
+ $('#practice-game-hint').addEventListener('click',()=>{const q=practiceActivities[activePracticeMode].questions[activePracticeQuestion%practiceActivities[activePracticeMode].questions.length];const box=$('#practice-game-hint-message');box.textContent=q.hint;box.hidden=false;});
  $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
- bindHint('#practice-hint','#practice-hint-message',()=>practiceQuestions[practiceIndex%practiceQuestions.length].hint);
+ renderPracticeMenu();
  bindHint('#challenge-hint','#challenge-hint-message',()=>challengeQuestions[challengeIndex%challengeQuestions.length].hint);
- $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset your points and learning progress on this device?'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;saveProgress();renderPractice();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
- renderPizza();renderPractice();renderChallenge();
+ $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset your points and learning progress on this device?'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;activePracticeMode=null;saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
+ renderPizza();renderPracticeMenu();renderChallenge();
 }
 const soundToggle=$('#sound-toggle');
 if(soundToggle)soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundToggle.textContent=soundEnabled?'🔊':'🔈';soundToggle.setAttribute('aria-pressed',String(soundEnabled));soundToggle.setAttribute('aria-label',soundEnabled?'Turn sound effects off':'Turn sound effects on');if(soundEnabled)playTone(true);});
