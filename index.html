@@ -3,133 +3,57 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#243b80">
-  <meta name="description" content="A playful, interactive maths playground for primary learners. Explore fractions, practise skills, and build confidence.">
-  <title>Maths Playground — Maths made fun</title>
+  <meta name="theme-color" content="#635bdb">
+  <meta name="description" content="A playful, interactive maths playground for primary learners. Explore learning modules, practise skills, and build confidence.">
+  <title>Maths Playground — Home</title>
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A9%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" defer></script>
 </head>
-<body>
+<body class="home-page">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <header class="topbar">
-    <a class="brand" href="./" aria-label="Maths Playground home">
-      <span class="brand-mark" aria-hidden="true">✳</span>
-      <span>maths<span class="brand-accent">playground</span><small>Curious minds. Confident maths.</small></span>
-    </a>
-    <div class="topbar-right">
-      <span class="streak-pill" title="Your practice points"><span aria-hidden="true">⭐</span> <span id="total-points">0</span> points</span>
-      <button class="icon-button" id="sound-toggle" type="button" aria-pressed="false" aria-label="Turn sound effects on">🔈</button>
-    </div>
+    <a class="brand" href="./" aria-label="Maths Playground home"><span class="brand-mark" aria-hidden="true">✳</span><span>maths<span class="brand-accent">playground</span><small>Curious minds. Confident maths.</small></span></a>
+    <div class="topbar-right"><span class="streak-pill" title="Your practice points"><span aria-hidden="true">⭐</span> <span id="total-points">0</span> points</span><button class="icon-button" id="sound-toggle" type="button" aria-pressed="false" aria-label="Turn sound effects on">🔈</button></div>
   </header>
-
   <main id="main-content">
     <section class="welcome hero-card" aria-labelledby="welcome-title">
       <div class="hero-copy">
         <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR MATHS ADVENTURE STARTS HERE</p>
         <h1 id="welcome-title">Big ideas.<br><span>Little steps.</span></h1>
-        <p>Explore, experiment, and discover that maths is everywhere. Ready to play?</p>
-        <a class="primary-button hero-button" href="#fractions">Let's play <span aria-hidden="true">→</span></a>
+        <p>Explore, experiment, and discover that maths is everywhere. Choose an adventure and learn at your own pace.</p>
+        <a class="primary-button hero-button" href="./modules/fractions/">Start learning <span aria-hidden="true">→</span></a>
       </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <div class="floating-shape shape-circle">½</div>
-        <div class="floating-shape shape-star">✦</div>
-        <div class="fraction-pie"><span></span><span></span><span></span><span></span></div>
-        <div class="floating-shape shape-square">+</div>
-        <div class="floating-shape shape-triangle">÷</div>
-        <div class="hero-spark spark-one">✧</div><div class="hero-spark spark-two">✦</div>
-      </div>
+      <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="floating-shape shape-circle">½</div><div class="floating-shape shape-star">✦</div><div class="fraction-pie"><span></span><span></span><span></span><span></span></div><div class="floating-shape shape-square">+</div><div class="floating-shape shape-triangle">÷</div><div class="hero-spark spark-one">✧</div><div class="hero-spark spark-two">✦</div></div>
       <div class="hero-bottom"><span>🧠</span> Learn at your own pace <span class="hero-bottom-dot">•</span> No pressure, just progress!</div>
     </section>
-
-    <section class="section-heading" aria-labelledby="path-title">
-      <div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">What shall we explore?</h2></div>
-      <span class="coming-label"><span class="live-dot"></span> More adventures coming</span>
+    <section class="dashboard-summary" aria-label="Your learning progress">
+      <div><span class="summary-icon">🌟</span><div><strong id="dashboard-points">0</strong><span>Total points earned</span></div></div>
+      <div><span class="summary-icon">🎯</span><div><strong id="dashboard-practice">0</strong><span>Practice questions tried</span></div></div>
+      <div><span class="summary-icon">🏆</span><div><strong id="dashboard-challenges">0</strong><span>Challenges attempted</span></div></div>
     </section>
-
+    <section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">What shall we explore?</h2></div><span class="coming-label"><span class="live-dot"></span> More adventures coming</span></section>
     <section class="module-grid" aria-label="Maths learning modules">
-      <article class="module-card module-active" id="fractions">
-        <div class="module-illustration fraction-illustration" aria-hidden="true">
-          <div class="mini-pie"><i></i><i></i><i></i><i></i></div>
-          <span class="mini-fraction">¾</span><span class="module-spark">✦</span>
-        </div>
-        <div class="module-content">
-          <div class="module-meta"><span class="module-tag available-tag">READY TO PLAY</span><span class="age-tag">Ages 7–12</span></div>
-          <h3>Fraction Fun</h3>
-          <p>Slice it, share it, compare it! Discover how fractions work in real life.</p>
-          <div class="module-progress"><span id="fraction-progress-bar"></span></div>
-          <div class="module-footer"><span id="fraction-progress-label">Your first adventure awaits</span><button class="round-arrow" id="open-fractions" type="button" aria-label="Open Fraction Fun">↗</button></div>
-        </div>
-      </article>
-      <article class="module-card module-locked">
+      <a class="module-card module-active" href="./modules/fractions/" aria-label="Open Fraction Fun">
+        <div class="module-illustration fraction-illustration" aria-hidden="true"><div class="mini-pie"><i></i><i></i><i></i><i></i></div><span class="mini-fraction">¾</span><span class="module-spark">✦</span></div>
+        <div class="module-content"><div class="module-meta"><span class="module-tag available-tag">READY TO PLAY</span><span class="age-tag">Ages 7–12</span></div><h3>Fraction Fun</h3><p>Slice it, share it, compare it! Discover how fractions work in real life.</p><div class="module-progress"><span id="fraction-progress-bar"></span></div><div class="module-footer"><span id="fraction-progress-label">Your first adventure awaits</span><span class="round-arrow" aria-hidden="true">↗</span></div></div>
+      </a>
+      <a class="module-card module-coming" href="./modules/numbers/">
         <div class="module-illustration number-illustration" aria-hidden="true"><span class="number-bubble">7</span><span class="number-plus">+</span><span class="number-bubble bubble-two">3</span><span class="number-equals">=</span><span class="number-result">?</span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 5–12</span></div><h3>Number Explorers</h3><p>Count, calculate, and discover clever ways to solve problems.</p><div class="module-footer"><span>Numbers & operations</span><span class="lock-icon" aria-label="Coming soon">⌁</span></div></div>
-      </article>
-      <article class="module-card module-locked">
+        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 5–12</span></div><h3>Number Explorers</h3><p>Count, calculate, and discover clever ways to solve problems.</p><div class="module-footer"><span>Numbers &amp; operations</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
+      </a>
+      <a class="module-card module-coming" href="./modules/geometry/">
         <div class="module-illustration shape-illustration" aria-hidden="true"><span class="geo-circle"></span><span class="geo-triangle"></span><span class="geo-square"></span><span class="geo-diamond"></span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 6–12</span></div><h3>Shape Safari</h3><p>Hunt for shapes, measure the world, and spot patterns everywhere.</p><div class="module-footer"><span>Geometry & measurement</span><span class="lock-icon" aria-label="Coming soon">⌁</span></div></div>
-      </article>
-      <article class="module-card module-locked">
+        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 6–12</span></div><h3>Shape Safari</h3><p>Hunt for shapes, measure the world, and spot patterns everywhere.</p><div class="module-footer"><span>Geometry &amp; measurement</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
+      </a>
+      <a class="module-card module-coming" href="./modules/challenges/">
         <div class="module-illustration puzzle-illustration" aria-hidden="true"><span>?</span><span>✦</span><span>?</span><span>✧</span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 7–12</span></div><h3>Brainy Challenges</h3><p>Put on your thinking cap and tackle playful logic puzzles.</p><div class="module-footer"><span>Puzzles & problem-solving</span><span class="lock-icon" aria-label="Coming soon">⌁</span></div></div>
-      </article>
+        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 7–12</span></div><h3>Brainy Challenges</h3><p>Put on your thinking cap and tackle playful logic puzzles.</p><div class="module-footer"><span>Puzzles &amp; problem-solving</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
+      </a>
     </section>
-
-    <section class="learning-panel" id="fraction-workspace" aria-labelledby="workspace-title" hidden>
-      <div class="workspace-heading">
-        <div><p class="eyebrow">MODULE 01 · FRACTIONS</p><h2 id="workspace-title">Welcome to Fraction Fun!</h2><p>Every fraction tells a story about equal parts. Let's discover yours.</p></div>
-        <button class="close-workspace" id="close-fractions" type="button" aria-label="Close Fraction Fun">×</button>
-      </div>
-      <div class="tab-list" role="tablist" aria-label="Fraction activities">
-        <button class="tab-button is-active" id="tab-learn" type="button" role="tab" aria-selected="true" aria-controls="panel-learn" data-panel="learn">🌱 Learn</button>
-        <button class="tab-button" id="tab-practice" type="button" role="tab" aria-selected="false" aria-controls="panel-practice" data-panel="practice">🎯 Practise</button>
-        <button class="tab-button" id="tab-challenge" type="button" role="tab" aria-selected="false" aria-controls="panel-challenge" data-panel="challenge">🏆 Challenge</button>
-      </div>
-
-      <div class="activity-panel" id="panel-learn" role="tabpanel" aria-labelledby="tab-learn" data-activity="learn">
-        <div class="learn-layout">
-          <div class="learn-text"><span class="lesson-step">YOUR FIRST DISCOVERY</span><h3>Fractions are equal shares</h3><p>Imagine a delicious pizza! When we split it into <strong>4 equal slices</strong>, each slice is one quarter, written as <strong>¼</strong>.</p><p>The bottom number tells us how many equal parts there are. The top number tells us how many parts we have.</p>
-            <div class="fraction-key"><div><span class="key-number">1</span><span>Numerator<br><small>parts we have</small></span></div><div class="fraction-line"></div><div><span class="key-number">4</span><span>Denominator<br><small>equal parts in total</small></span></div></div>
-            <div class="tip-box"><span aria-hidden="true">💡</span><p><strong>Remember:</strong> the parts must be equal for the fraction to be fair!</p></div>
-          </div>
-          <div class="visual-card"><span class="visual-label">TAP A SLICE TO EXPLORE</span><div class="interactive-pizza" id="learn-pizza" role="group" aria-label="Pizza split into four equal slices"></div><p class="visual-caption" id="pizza-caption" aria-live="polite">One whole pizza. 4 equal slices.</p><div class="pizza-controls"><button class="secondary-button" id="pizza-reset" type="button">Reset pizza</button><span class="fraction-readout" id="pizza-readout">0/4</span></div></div>
-        </div>
-        <div class="lesson-navigation"><span>Lesson 1 of 3 · The basics</span><button class="primary-button" data-go="practice" type="button">I'm ready to practise →</button></div>
-      </div>
-
-      <div class="activity-panel" id="panel-practice" role="tabpanel" aria-labelledby="tab-practice" data-activity="practice" hidden>
-        <div class="quiz-card">
-          <div class="quiz-topline"><span class="lesson-step">WARM-UP ROUND</span><span class="question-counter" id="practice-counter">QUESTION 1</span></div>
-          <div class="quiz-progress"><span id="practice-progress"></span></div>
-          <h3 id="practice-question">A chocolate bar has 4 equal pieces. You eat 1 piece. What fraction did you eat?</h3>
-          <div class="question-visual" id="practice-visual" aria-hidden="true"></div>
-          <div class="answer-grid" id="practice-answers" role="group" aria-label="Choose your answer"></div>
-          <div class="feedback-message" id="practice-feedback" role="status" aria-live="polite" hidden></div>
-          <div class="quiz-actions"><button class="text-button" id="practice-hint" type="button">💡 Give me a hint</button><button class="primary-button" id="practice-next" type="button" disabled>Next question →</button></div>
-          <div class="hint-message" id="practice-hint-message" hidden></div>
-        </div>
-      </div>
-
-      <div class="activity-panel" id="panel-challenge" role="tabpanel" aria-labelledby="tab-challenge" data-activity="challenge" hidden>
-        <div class="quiz-card challenge-card">
-          <div class="quiz-topline"><span class="lesson-step">BRAIN POWER</span><span class="challenge-badge">⭐ BONUS POINTS</span></div>
-          <h3 id="challenge-question">Which fraction is the largest?</h3>
-          <p class="challenge-intro">Think carefully. The biggest numbers don't always make the biggest fraction!</p>
-          <div class="challenge-visuals" id="challenge-visuals"></div>
-          <div class="answer-grid" id="challenge-answers" role="group" aria-label="Choose the largest fraction"></div>
-          <div class="feedback-message" id="challenge-feedback" role="status" aria-live="polite" hidden></div>
-          <div class="quiz-actions"><button class="text-button" id="challenge-hint" type="button">💡 Give me a hint</button><button class="primary-button" id="challenge-next" type="button" disabled>Next challenge →</button></div>
-          <div class="hint-message" id="challenge-hint-message" hidden></div>
-        </div>
-      </div>
-      <div class="workspace-footer"><span>✨ Small steps make big progress.</span><button class="text-button" id="reset-progress" type="button">Reset my progress</button></div>
-    </section>
-
     <section class="encouragement-strip"><div class="encourage-icon">🌈</div><div><h3>Every expert was once a beginner.</h3><p>Take your time, try things out, and celebrate every little win.</p></div><span class="encourage-spark" aria-hidden="true">✦</span></section>
   </main>
-
   <footer class="site-footer"><a class="footer-brand" href="./">✳ mathsplayground</a><span>Made for curious minds 💛</span><span>Learn · Play · Grow</span></footer>
   <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 </body>
