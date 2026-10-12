@@ -167,8 +167,14 @@ function renderPracticeQuestion(){
  else{const clue=document.createElement('div');clue.className='detective-clue';clue.textContent='🔎 Find the missing number';visual.append(clue);}
  answers.replaceChildren();$('#practice-check-shading').hidden=activePracticeMode!=='shade';
  if(activePracticeMode!=='shade'){
-  let choices=activePracticeMode==='match'?[q.n+'/'+q.d,'1/'+q.d,Math.max(1,q.n-1)+'/'+q.d,q.n+'/'+Math.min(12,q.d+1)]:activePracticeMode==='compare'?[q.a.n+'/'+q.a.d,q.b.n+'/'+q.b.d]:q.answers.slice();
-  choices=[...new Set(choices)];for(let i=1;choices.length<4;i++)choices.push(activePracticeMode==='detective'?String(i):`${Math.max(1,q.n-1)}/${q.d}`);choices=[...new Set(choices)];if(activePracticeMode==='match'&&!choices.includes(q.n+'/'+q.d))choices[0]=q.n+'/'+q.d;
+  let choices;
+  if(activePracticeMode==='match') {
+    const correct=`${q.n}/${q.d}`;
+    choices=[correct,`${q.n===1?2:q.n-1}/${q.d}`,`${q.n}/${q.d+1}`,`${Math.min(q.d,q.n+1)}/${q.d}`];
+    choices=[...new Set(choices)];
+    for(let d=q.d+2;choices.length<4;d++) {const candidate=`${q.n}/${d}`;if(!choices.includes(candidate)&&candidate!==correct)choices.push(candidate);}
+  } else if(activePracticeMode==='compare') choices=[q.a.n+'/'+q.a.d,q.b.n+'/'+q.b.d];
+  else choices=q.answers.slice();
   choices.sort(()=>Math.random()-.5).forEach(answer=>{const b=document.createElement('button');b.type='button';b.className='answer-button';b.textContent=answer;b.addEventListener('click',()=>answerMiniPractice(answer,b));answers.append(b);});
  }
  $('#practice-game-feedback').hidden=true;$('#practice-game-feedback').className='feedback-message';$('#practice-game-next').disabled=true;$('#practice-game-next').textContent=activePracticeQuestion%qs.length===qs.length-1?'Play another round →':'Next question →';$('#practice-game-hint-message').hidden=true;$('#practice-game-hint').disabled=false;$('#practice-check-shading').disabled=false;
@@ -248,7 +254,6 @@ if ($('#fraction-workspace')) {
  const denominatorPlus=$('#denominator-plus');if(denominatorPlus)denominatorPlus.addEventListener('click',()=>setModelDenominator(modelDenominator+1));
  $$('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;if(modelSplit==='diagonal')modelDenominator=2;else if(modelSplit==='quarters')modelDenominator=4;selectedSlices.clear();$$('[data-split]').forEach(item=>{const active=item.dataset.split===modelSplit;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
  $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
- $('#practice-next').addEventListener('click',nextPractice);
  $('#practice-menu-back').addEventListener('click',()=>{activePracticeMode=null;renderPracticeMenu();});
  $('#practice-game-next').addEventListener('click',nextMiniPractice);
  $('#practice-check-shading').addEventListener('click',()=>{const q=practiceActivities.shade.questions[activePracticeQuestion%practiceActivities.shade.questions.length];finishMiniPractice(shadeSelection.size===q.n,q.explain);});
