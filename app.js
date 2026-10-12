@@ -93,25 +93,57 @@ function switchPanel(name) {
   });
   $$('.activity-panel').forEach(panel => { panel.hidden = panel.dataset.activity !== name; });
 }
-function renderPizza() {
-  const pizza = $('#learn-pizza');
-  pizza.replaceChildren();
-  for (let i = 0; i < 4; i++) {
-    const slice = document.createElement('button');
-    slice.type = 'button';
-    slice.className = 'pizza-slice' + (selectedSlices.has(i) ? ' is-selected' : '');
-    slice.setAttribute('aria-label', `Slice ${i + 1}${selectedSlices.has(i) ? ', selected' : ', not selected'}`);
-    slice.setAttribute('aria-pressed', String(selectedSlices.has(i)));
-    slice.addEventListener('click', () => {
-      if (selectedSlices.has(i)) selectedSlices.delete(i); else selectedSlices.add(i);
-      renderPizza();
-    });
-    pizza.append(slice);
-  }
-  const count = selectedSlices.size;
-  $('#pizza-readout').textContent = `${count}/4`;
-  $('#pizza-caption').textContent = count === 0 ? 'One whole pizza. 4 equal slices.' : count === 4 ? 'You selected all 4 slices: one whole pizza!' : `You selected ${count} of 4 equal slices. That is ${count}/4.`;
+let modelShape='pizza';
+let modelSplit='quarters';
+function getModelSegments(){
+ const circle=modelShape==='pizza',x=modelShape==='square'?50:30,y=modelShape==='square'?25:45,w=modelShape==='square'?140:180,h=modelShape==='square'?140:110;
+ if(circle){
+  if(modelSplit==='quarters')return [
+   {d:'M120 100 L120 20 A80 80 0 0 1 200 100 Z',label:'Top-right quarter'},
+   {d:'M120 100 L200 100 A80 80 0 0 1 120 180 Z',label:'Bottom-right quarter'},
+   {d:'M120 100 L120 180 A80 80 0 0 1 40 100 Z',label:'Bottom-left quarter'},
+   {d:'M120 100 L40 100 A80 80 0 0 1 120 20 Z',label:'Top-left quarter'}];
+  if(modelSplit==='horizontal')return [
+   {d:'M40 100 A80 80 0 0 1 200 100 L120 100 Z',label:'First half'},
+   {d:'M200 100 A80 80 0 0 1 40 100 L120 100 Z',label:'Second half'}];
+  if(modelSplit==='vertical')return [
+   {d:'M120 20 A80 80 0 0 0 120 180 L120 100 Z',label:'Left half'},
+   {d:'M120 180 A80 80 0 0 0 120 20 L120 100 Z',label:'Right half'}];
+  return [
+   {d:'M176.6 43.4 A80 80 0 0 1 63.4 156.6 Z',label:'Diagonal half one'},
+   {d:'M63.4 156.6 A80 80 0 0 1 176.6 43.4 Z',label:'Diagonal half two'}];
+ }
+ if(modelSplit==='horizontal')return [
+  {d:`M${x} ${y} H${x+w} V${y+h/2} H${x} Z`,label:'Top half'},
+  {d:`M${x} ${y+h/2} H${x+w} V${y+h} H${x} Z`,label:'Bottom half'}];
+ if(modelSplit==='vertical')return [
+  {d:`M${x} ${y} H${x+w/2} V${y+h} H${x} Z`,label:'Left half'},
+  {d:`M${x+w/2} ${y} H${x+w} V${y+h} H${x+w/2} Z`,label:'Right half'}];
+ if(modelSplit==='diagonal')return [
+  {d:`M${x} ${y} H${x+w} L${x} ${y+h} Z`,label:'Diagonal half one'},
+  {d:`M${x+w} ${y} V${y+h} H${x} Z`,label:'Diagonal half two'}];
+ return [
+  {d:`M${x} ${y} H${x+w/2} V${y+h/2} H${x} Z`,label:'Top-left quarter'},
+  {d:`M${x+w/2} ${y} H${x+w} V${y+h/2} H${x+w/2} Z`,label:'Top-right quarter'},
+  {d:`M${x+w/2} ${y+h/2} H${x+w} V${y+h} H${x+w/2} Z`,label:'Bottom-right quarter'},
+  {d:`M${x} ${y+h/2} H${x+w/2} V${y+h} H${x} Z`,label:'Bottom-left quarter'}];
 }
+function renderPizza(){
+ const model=$('#learn-pizza');if(!model)return;
+ const segments=getModelSegments(),colors=['#ffc45f','#ff8da7','#8c83ed','#65d4ae'],ns='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(ns,'svg');svg.setAttribute('viewBox','0 0 240 200');svg.setAttribute('class','fraction-model-svg');svg.setAttribute('role','group');svg.setAttribute('aria-label',`${modelShape} divided into ${segments.length} equal parts`);
+ segments.forEach((segment,index)=>{
+  const path=document.createElementNS(ns,'path');path.setAttribute('d',segment.d);path.setAttribute('fill',selectedSlices.has(index)?'#6b63df':colors[index%colors.length]);path.setAttribute('stroke','#fff');path.setAttribute('stroke-width','3');path.setAttribute('class','model-segment'+(selectedSlices.has(index)?' is-selected':''));path.setAttribute('role','button');path.setAttribute('tabindex','0');path.setAttribute('aria-label',segment.label);path.setAttribute('aria-pressed',String(selectedSlices.has(index)));
+  const toggle=()=>{if(selectedSlices.has(index))selectedSlices.delete(index);else selectedSlices.add(index);renderPizza();};
+  path.addEventListener('click',toggle);path.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();toggle();}});svg.append(path);
+ });
+ if(modelShape==='pizza'){const o=document.createElementNS(ns,'circle');o.setAttribute('cx','120');o.setAttribute('cy','100');o.setAttribute('r','80');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}
+ else{const o=document.createElementNS(ns,'rect');o.setAttribute('x',modelShape==='square'?'50':'30');o.setAttribute('y',modelShape==='square'?'25':'45');o.setAttribute('width',modelShape==='square'?'140':'180');o.setAttribute('height',modelShape==='square'?'140':'110');o.setAttribute('rx','2');o.setAttribute('fill','none');o.setAttribute('stroke','#fff');o.setAttribute('stroke-width','3');svg.append(o);}
+ model.replaceChildren(svg);const count=selectedSlices.size,total=segments.length,name=modelShape==='pizza'?'pizza':modelShape;
+ $('#pizza-readout').textContent=`${count}/${total}`;
+ $('#pizza-caption').textContent=count===0?`A ${name} divided into ${total} equal parts. Tap a part to select it.`:count===total?`You selected all ${total} parts: one whole ${name}!`:`You selected ${count} of ${total} equal parts: ${count}/${total}.`;
+}
+
 function renderPractice() {
   const q = practiceQuestions[practiceIndex % practiceQuestions.length];
   practiceAnswered = false;
@@ -228,50 +260,21 @@ function bindHint(buttonId, messageId, getHint) {
 }
 
 if ($('#fraction-workspace')) {
-  $('#close-fractions').addEventListener('click', () => {
-    window.location.href = '../../';
-  });
-  $$('.tab-button').forEach(button => button.addEventListener('click', () => switchPanel(button.dataset.panel)));
-  $$('[data-go]').forEach(button => button.addEventListener('click', () => {
-    switchPanel(button.dataset.go);
-    if (button.dataset.go === 'practice') renderPractice();
-  }));
-  $$('.tab-button').forEach(button => button.addEventListener('keydown', event => {
-    if (!['ArrowLeft','ArrowRight','Home','End'].includes(event.key)) return;
-    event.preventDefault();
-    const tabs = $$('.tab-button');
-    const current = tabs.indexOf(button);
-    const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (current + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
-    tabs[next].focus();
-    switchPanel(tabs[next].dataset.panel);
-  }));
-  $('#pizza-reset').addEventListener('click', () => { selectedSlices.clear(); renderPizza(); });
-  $('#practice-next').addEventListener('click', nextPractice);
-  $('#challenge-next').addEventListener('click', () => { challengeIndex++; renderChallenge(); });
-  bindHint('#practice-hint', '#practice-hint-message', () => practiceQuestions[practiceIndex % practiceQuestions.length].hint);
-  bindHint('#challenge-hint', '#challenge-hint-message', () => challengeQuestions[challengeIndex % challengeQuestions.length].hint);
-  $('#reset-progress').addEventListener('click', () => {
-    if (!window.confirm('Reset your points and learning progress on this device?')) return;
-    progress = { ...defaultProgress };
-    practiceIndex = 0;
-    challengeIndex = 0;
-    saveProgress();
-    renderPractice();
-    renderChallenge();
-    showToast('Progress reset. A fresh start! 🌱');
-  });
-  renderPizza();
-  renderPractice();
-  renderChallenge();
+ $$('.tab-button').forEach(button=>button.addEventListener('click',()=>switchPanel(button.dataset.panel)));
+ $$('[data-go]').forEach(button=>button.addEventListener('click',()=>{switchPanel(button.dataset.go);if(button.dataset.go==='practice')renderPractice();}));
+ $$('.tab-button').forEach(button=>button.addEventListener('keydown',event=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;event.preventDefault();const tabs=$$('.tab-button'),current=tabs.indexOf(button),next=event.key==='Home'?0:event.key==='End'?tabs.length-1:(current+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length;tabs[next].focus();switchPanel(tabs[next].dataset.panel);}));
+ $$('[data-shape]').forEach(button=>button.addEventListener('click',()=>{modelShape=button.dataset.shape;selectedSlices.clear();$$('[data-shape]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
+ $$('[data-split]').forEach(button=>button.addEventListener('click',()=>{modelSplit=button.dataset.split;selectedSlices.clear();$$('[data-split]').forEach(item=>{const active=item===button;item.classList.toggle('is-active',active);item.setAttribute('aria-pressed',String(active));});renderPizza();}));
+ $('#pizza-reset').addEventListener('click',()=>{selectedSlices.clear();renderPizza();});
+ $('#practice-next').addEventListener('click',nextPractice);
+ $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
+ bindHint('#practice-hint','#practice-hint-message',()=>practiceQuestions[practiceIndex%practiceQuestions.length].hint);
+ bindHint('#challenge-hint','#challenge-hint-message',()=>challengeQuestions[challengeIndex%challengeQuestions.length].hint);
+ $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset your points and learning progress on this device?'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;saveProgress();renderPractice();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
+ renderPizza();renderPractice();renderChallenge();
 }
-const soundToggle = $('#sound-toggle');
-if (soundToggle) soundToggle.addEventListener('click', () => {
-  soundEnabled = !soundEnabled;
-  soundToggle.textContent = soundEnabled ? '🔊' : '🔈';
-  soundToggle.setAttribute('aria-pressed', String(soundEnabled));
-  soundToggle.setAttribute('aria-label', soundEnabled ? 'Turn sound effects off' : 'Turn sound effects on');
-  if (soundEnabled) playTone(true);
-});
+const soundToggle=$('#sound-toggle');
+if(soundToggle)soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundToggle.textContent=soundEnabled?'🔊':'🔈';soundToggle.setAttribute('aria-pressed',String(soundEnabled));soundToggle.setAttribute('aria-label',soundEnabled?'Turn sound effects off':'Turn sound effects on');if(soundEnabled)playTone(true);});
 renderProgress();
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
