@@ -74,3 +74,19 @@
 .shade-denominator-picker input:focus-visible{outline:3px solid #f1a923;outline-offset:3px}
 #shade-denominator-help{font-size:10px;line-height:1.5;color:var(--muted);margin:9px 0 0}
 @media(max-width:480px){.shade-denominator-picker{padding:12px}.shade-denominator-row{gap:9px}}
+
+/* Mixed fraction challenge question types */
+.challenge-card .quiz-topline{flex-wrap:wrap}
+.challenge-expression{display:grid;place-items:center;min-height:94px;width:100%;padding:20px 14px;border-radius:16px;background:#f8f8ff;border:1px solid #e9eaf3;color:#4c4a89;text-align:center;font:900 clamp(23px,4vw,32px) 'Nunito',sans-serif;overflow-wrap:anywhere}
+.challenge-card .challenge-visuals:has(.challenge-expression){grid-template-columns:minmax(0,1fr)}
+.challenge-card .challenge-visuals:has(.challenge-number-line){grid-template-columns:minmax(0,1fr)}
+.challenge-number-line{width:100%;padding:20px 14px 8px;border-radius:16px;background:#f8f8ff;border:1px solid #e9eaf3}
+.number-line-track{position:relative;height:38px;margin:10px 18px 16px}
+.number-line-track:before{content:"";position:absolute;left:0;right:0;top:12px;height:4px;border-radius:5px;background:#8b83ed}
+.number-line-mark{position:absolute;top:5px;width:3px;height:18px;background:#4c4a89;transform:translateX(-50%);z-index:1}
+.number-line-mark.midpoint{height:28px;top:0;width:5px;background:#f0a923;border-radius:3px}
+.number-line-label{position:absolute;top:25px;transform:translateX(-50%);font-size:12px;font-weight:900;color:var(--ink)}
+.challenge-number-line p{margin:8px 0 0;text-align:center;color:var(--muted);font-size:11px;line-height:1.5}
+.challenge-card .challenge-answer{font-size:clamp(12px,2.2vw,16px);overflow-wrap:anywhere;min-width:0;padding:10px 7px}
+.challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:480px){.challenge-card .quiz-topline{gap:7px}.challenge-card .challenge-visuals{margin:16px 0}.challenge-number-line{padding:16px 10px 7px}.challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
