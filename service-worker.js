@@ -1,7 +1,15 @@
-const CACHE_NAME = 'maths-playground-v1';
+const CACHE_NAME = 'maths-playground-v2';
 const APP_SHELL = [
   './',
   './index.html',
+  './modules/fractions/',
+  './modules/fractions/index.html',
+  './modules/numbers/',
+  './modules/numbers/index.html',
+  './modules/geometry/',
+  './modules/geometry/index.html',
+  './modules/challenges/',
+  './modules/challenges/index.html',
   './styles.css',
   './app.js',
   './manifest.webmanifest',
