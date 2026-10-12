@@ -1,2 +1,0 @@
-Temporary ChatGPT GitHub connector write-access test.
-This file is only for verifying repository write access and will be removed immediately.
