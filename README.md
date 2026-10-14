@@ -1,6 +1,8 @@
-# Maths Playground
+# Al-Jaleel Academy Learning Playground
 
-A playful, mobile-friendly maths learning app for primary learners (ages 7–12). Each learning module has its own page so learners can move between adventures without scrolling through one long page.
+A playful, mobile-first learning app from Al-Jaleel Academy for Nursery and Primary learners aged 4–12. The app is designed to grow from its existing maths activities into a broader library of written lessons and interactive learning games. Its visual identity uses deep blue (`#001C2C`), golden yellow (`#FBBA00`), and white, with the school motto “Igniting a Brighter Future.”
+
+The app is static and account-free: learners can open the shared link without creating an account. Progress is stored locally on each device and does not sync between devices. Other schools can use the same shared app link; school-specific customisation is not part of this version. Each learning module has its own page so learners can move between activities without scrolling through one long page.
 
 ## Current MVP
 
