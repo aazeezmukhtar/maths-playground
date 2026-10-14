@@ -41,7 +41,7 @@ window.LEARNING_CATALOG = {
     {
       id: "logic", title: "Logic & Thinking", symbol: "🧩",
       description: "Practise reasoning, patterns, memory, and playful problem-solving.",
-      ages: "5–12", status: "planned", route: "modules/challenges/",
+      ages: "5–12", status: "planned", route: "subjects/logic/",
       modules: [
         { id: "brainy-challenges", title: "Brainy Challenges", description: "Try puzzles and build problem-solving confidence.", ages: "7–12", status: "coming-soon", route: "modules/challenges/", curriculumTags: ["Reasoning", "Problem-solving"] }
       ]
