@@ -10,6 +10,9 @@ The app is static and account-free: learners can open the shared link without cr
 - **Fraction Fun — Learn:** visual explanation of numerator and denominator, plus a tappable pizza model.
 - **Fraction Fun — Practise:** multiple-choice questions, hints, feedback, and points.
 - **Fraction Fun — Challenge:** compare fractions using visual fraction bars.
+- **Subject directory:** Mathematics, English, Science & Discovery, Arabic, Creative Arts, and Logic & Thinking.
+- **Mathematics directory:** Fraction Fun, Number Explorers, and Shape Safari are listed in a shared catalogue.
+- **Logic & Thinking directory:** Brainy Challenges is listed as a planned module.
 - **Coming-soon module pages:** Number Explorers, Shape Safari, and Brainy Challenges have their own routes and can be built independently.
 - Local progress saved on the learner's device and shared between pages on the same site.
 - Responsive layout, keyboard-friendly tabs, accessible feedback, and optional sound effects on the home page.
@@ -35,10 +38,19 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 - `modules/numbers/index.html` — Number Explorers coming-soon page
 - `modules/geometry/index.html` — Shape Safari coming-soon page
 - `modules/challenges/index.html` — Brainy Challenges coming-soon page
+- `subjects/index.html` — subject directory
+- `subjects/mathematics/index.html` — mathematics module directory
+- `subjects/logic/index.html` — logic and thinking directory
+- `data/learning-catalog.js` — shared subject, module, age-stage, and curriculum-tag metadata
+- `catalog.js` and `catalog.css` — reusable catalogue renderer and responsive card styles
 - `styles.css` — shared responsive design and page layouts
 - `app.js` — activity logic and shared local progress
 - `manifest.webmanifest` — installable app metadata
 - `service-worker.js` — offline app-shell caching
+
+## Learning stages
+
+The catalogue defines three flexible learning stages: Early Years (ages 4–5), Lower Primary (ages 6–8), and Upper Primary (ages 9–12). These are planning labels, not a claim of alignment to one country's curriculum. Module age ranges and curriculum tags are stored as metadata so content can be expanded and reviewed later.
 
 ## Planned modules
 
