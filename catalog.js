@@ -17,7 +17,7 @@
 
   function createCard({ title, symbol, description, ages, status, route, meta }) {
     const card = make(route ? "a" : "article", "catalog-card" + (status === "available" ? " is-available" : " is-planned"));
-    if (route) card.href = route;
+    if (route) card.href = (document.body.dataset.root || "./") + route;
     const top = make("div", "catalog-card-top");
     top.append(make("span", "catalog-symbol", symbol || "✦"));
     top.append(make("span", "catalog-status status-" + (status || "planned"), statusLabel(status)));
