@@ -1,14 +1,14 @@
 {
   "id": "./",
-  "name": "Maths Playground",
-  "short_name": "Maths Play",
-  "description": "A playful interactive maths learning app for primary learners.",
+  "name": "Al-Jaleel Academy Learning Playground",
+  "short_name": "Al-Jaleel Learn",
+  "description": "A playful learning playground from Al-Jaleel Academy for Nursery and Primary learners.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f7f8fc",
-  "theme_color": "#635bdb",
+  "background_color": "#FFFFFF",
+  "theme_color": "#001C2C",
   "categories": ["education", "kids"],
   "icons": [
     {
