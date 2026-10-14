@@ -9,6 +9,9 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A9%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./catalog.css">
+  <script src="./data/learning-catalog.js" defer></script>
+  <script src="./catalog.js" defer></script>
   <script src="./app.js" defer></script>
 </head>
 <body class="home-page">
@@ -33,25 +36,8 @@
       <div><span class="summary-icon">🎯</span><div><strong id="dashboard-practice">0</strong><span>Practice questions tried</span></div></div>
       <div><span class="summary-icon">🏆</span><div><strong id="dashboard-challenges">0</strong><span>Challenges attempted</span></div></div>
     </section>
-    <section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">What shall we explore?</h2></div><span class="coming-label"><span class="live-dot"></span> More adventures coming</span></section>
-    <section class="module-grid" aria-label="Maths learning modules">
-      <a class="module-card module-active" href="./modules/fractions/" aria-label="Open Fraction Fun">
-        <div class="module-illustration fraction-illustration" aria-hidden="true"><div class="mini-pie"><i></i><i></i><i></i><i></i></div><span class="mini-fraction">¾</span><span class="module-spark">✦</span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag available-tag">READY TO PLAY</span><span class="age-tag">Ages 7–12</span></div><h3>Fraction Fun</h3><p>Slice it, share it, compare it! Discover how fractions work in real life.</p><div class="module-progress"><span id="fraction-progress-bar"></span></div><div class="module-footer"><span id="fraction-progress-label">Your first adventure awaits</span><span class="round-arrow" aria-hidden="true">↗</span></div></div>
-      </a>
-      <a class="module-card module-coming" href="./modules/numbers/">
-        <div class="module-illustration number-illustration" aria-hidden="true"><span class="number-bubble">7</span><span class="number-plus">+</span><span class="number-bubble bubble-two">3</span><span class="number-equals">=</span><span class="number-result">?</span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 5–12</span></div><h3>Number Explorers</h3><p>Count, calculate, and discover clever ways to solve problems.</p><div class="module-footer"><span>Numbers &amp; operations</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
-      </a>
-      <a class="module-card module-coming" href="./modules/geometry/">
-        <div class="module-illustration shape-illustration" aria-hidden="true"><span class="geo-circle"></span><span class="geo-triangle"></span><span class="geo-square"></span><span class="geo-diamond"></span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 6–12</span></div><h3>Shape Safari</h3><p>Hunt for shapes, measure the world, and spot patterns everywhere.</p><div class="module-footer"><span>Geometry &amp; measurement</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
-      </a>
-      <a class="module-card module-coming" href="./modules/challenges/">
-        <div class="module-illustration puzzle-illustration" aria-hidden="true"><span>?</span><span>✦</span><span>?</span><span>✧</span></div>
-        <div class="module-content"><div class="module-meta"><span class="module-tag soon-tag">COMING SOON</span><span class="age-tag">Ages 7–12</span></div><h3>Brainy Challenges</h3><p>Put on your thinking cap and tackle playful logic puzzles.</p><div class="module-footer"><span>Puzzles &amp; problem-solving</span><span class="module-arrow" aria-hidden="true">→</span></div></div>
-      </a>
-    </section>
+    <section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">Choose a subject</h2></div><a class="coming-label" href="./subjects/">Explore all subjects <span aria-hidden="true">→</span></a></section>
+    <section class="catalog-grid home-catalog-grid" data-catalog-view="subjects" aria-label="Learning subjects"></section>
     <section class="encouragement-strip"><div class="encourage-icon">🌈</div><div><h3>Every expert was once a beginner.</h3><p>Take your time, try things out, and celebrate every little win.</p></div><span class="encourage-spark" aria-hidden="true">✦</span></section>
   </main>
   <footer class="site-footer"><a class="footer-brand" href="./">✳ Al-Jaleel Academy</a><span>Igniting a Brighter Future</span><span>Learn · Play · Grow</span></footer>
