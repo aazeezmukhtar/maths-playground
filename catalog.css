@@ -1,4 +1,5 @@
 .catalog-main{max-width:1124px;margin:0 auto 48px;padding:0 2px}
+.home-catalog-grid{max-width:1124px;margin:0 auto 48px}
 .catalog-main>.back-link{display:inline-flex;margin:0 0 16px;color:var(--muted);font-size:12px;font-weight:800}
 .catalog-intro{padding:10px 0 28px}
 .catalog-intro .eyebrow{margin:0 0 9px}
@@ -26,5 +27,6 @@ a.catalog-card:hover{transform:translateY(-3px);border-color:#9CB0BA;box-shadow:
 .catalog-note>span{font-size:24px}
 .catalog-note strong{font:900 15px 'Nunito',sans-serif}
 .catalog-note p{font-size:12px;line-height:1.6;color:var(--muted);margin:5px 0 0}
+@media(max-width:1190px){.home-catalog-grid{margin-left:28px;margin-right:28px}}
 @media(max-width:1000px){.catalog-main{margin-left:28px;margin-right:28px}.catalog-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.catalog-main{margin:0 16px 34px;padding:0}.catalog-intro{padding:5px 0 23px}.catalog-intro h1{font-size:34px}.catalog-intro>p:last-child{font-size:12px}.catalog-grid{grid-template-columns:1fr;gap:12px}.catalog-card{min-height:0;padding:17px;border-radius:18px}.catalog-card-title{font-size:19px}.catalog-note{margin-top:20px;padding:16px}.catalog-page .site-footer{margin-left:12px;margin-right:12px}}
+@media(max-width:700px){.home-catalog-grid{margin:0 16px 34px}.catalog-main{margin:0 16px 34px;padding:0}.catalog-intro{padding:5px 0 23px}.catalog-intro h1{font-size:34px}.catalog-intro>p:last-child{font-size:12px}.catalog-grid{grid-template-columns:1fr;gap:12px}.catalog-card{min-height:0;padding:17px;border-radius:18px}.catalog-card-title{font-size:19px}.catalog-note{margin-top:20px;padding:16px}.catalog-page .site-footer{margin-left:12px;margin-right:12px}}
