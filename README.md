@@ -7,6 +7,8 @@ The app is static and account-free: learners can open the shared link without cr
 ## Current MVP
 
 - **Home dashboard:** module navigation, points total, and a quick view of learning activity.
+- **Shared module foundation:** reusable module metadata, learning goals, lesson/activity sequence, topic tags, and responsive overview renderer.
+- **Fraction Fun module overview:** learning goals and linked Learn, Practise, and Challenge activities before the existing interactive workspace.
 - **Fraction Fun — Learn:** visual explanation of numerator and denominator, plus a tappable pizza model.
 - **Fraction Fun — Practise:** multiple-choice questions, hints, feedback, and points.
 - **Fraction Fun — Challenge:** compare fractions using visual fraction bars.
@@ -42,6 +44,8 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 - `subjects/mathematics/index.html` — mathematics module directory
 - `subjects/logic/index.html` — logic and thinking directory
 - `data/learning-catalog.js` — shared subject, module, age-stage, and curriculum-tag metadata
+- `data/module-content.js` — detailed module content schema (overview, goals, lesson sequence, topics, progress policy)
+- `learning-module.js` and `learning-module.css` — reusable module overview renderer and responsive styles
 - `catalog.js` and `catalog.css` — reusable catalogue renderer and responsive card styles
 - `styles.css` — shared responsive design and page layouts
 - `app.js` — activity logic and shared local progress
