@@ -17,7 +17,9 @@
   overview.setAttribute("aria-labelledby", "module-overview-title");
   const heading = make("div", "module-overview-heading");
   heading.append(make("p", "eyebrow", "YOUR LEARNING PATH"));
-  heading.append(make("h2", "", "What you will learn"));
+  const overviewTitle = make("h2", "", "What you will learn");
+  overviewTitle.id = "module-overview-title";
+  heading.append(overviewTitle);
   heading.append(make("p", "module-overview-copy", moduleData.overview));
   overview.append(heading);
 
