@@ -91,15 +91,18 @@
 .challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:480px){.challenge-card .quiz-topline{gap:7px}.challenge-card .challenge-visuals{margin:16px 0}.challenge-number-line{padding:16px 10px 7px}.challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 
-/* Compact mobile header: keep branding and controls inside the viewport. */
-@media(max-width:480px){
-  html,body{max-width:100%;overflow-x:clip}
-  .topbar{width:100%;min-width:0;max-width:100%;padding:10px 12px;gap:8px;justify-content:space-between}
-  .brand{flex:0 0 auto;min-width:0;gap:0;font-size:0;letter-spacing:0}
-  .brand>span:not(.brand-mark){display:none}
-  .brand-mark{width:32px;height:32px;flex:0 0 32px;font-size:22px}
-  .topbar-right{flex:1;min-width:0;justify-content:flex-end;gap:6px}
-  .streak-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:0;padding:7px 9px;white-space:nowrap;font-size:11px}
-  .streak-pill [aria-hidden="true"]{font-size:12px}
-  .icon-button{flex:0 0 34px;width:34px;height:34px}
+
+/* Final compact header layout for narrow screens. */
+@media(max-width:600px){
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  .topbar{display:flex!important;align-items:center!important;justify-content:space-between!important;gap:8px!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0!important;padding:9px 12px!important;}
+  .topbar .brand{display:flex!important;flex:0 0 32px!important;width:32px!important;min-width:32px!important;max-width:32px!important;gap:0!important;overflow:hidden!important;font-size:0!important;letter-spacing:0!important;}
+  .topbar .brand>span:not(.brand-mark){display:none!important}
+  .topbar .brand .brand-mark{display:grid!important;flex:0 0 32px!important;width:32px!important;height:32px!important;font-size:21px!important;}
+  .topbar .topbar-right{display:flex!important;flex:1 1 auto!important;min-width:0!important;width:auto!important;justify-content:flex-end!important;align-items:center!important;gap:6px!important;}
+  .topbar .streak-pill{display:flex!important;flex:0 1 auto!important;align-items:center!important;justify-content:center!important;min-width:0!important;white-space:nowrap!important;padding:7px 8px!important;font-size:10px!important;}
+  .topbar .icon-button{display:grid!important;place-items:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;}
+  .topbar .learner-switch-button{display:flex!important;flex:0 0 34px!important;width:34px!important;min-width:34px!important;height:34px!important;max-width:34px!important;justify-content:center!important;padding:3px!important;}
+  .topbar .learner-chip-name,.topbar .learner-switch-button small{display:none!important}
+  .topbar .learner-manage-shortcut{display:none!important}
 }
