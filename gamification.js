@@ -3,7 +3,7 @@
   "use strict";
   const STORAGE_KEY = "maths-playground-gamification-v1";
   const catalogue = window.PLAYGROUND_GAMIFICATION;
-  const emptyState = () => ({ version: 1, coins: 0, levels: {}, inventory: [], equipped: {}, rewardedActivities: [] });
+  const emptyState = () => ({ version: 1, coins: 0, levels: {}, inventory: [], equipped: {}, rewardedActivities: [], rewardedQuestions: [] });
   const key = () => window.LearnerProfiles ? window.LearnerProfiles.storageKey(STORAGE_KEY) : STORAGE_KEY;
   const read = () => {
     try {
@@ -15,7 +15,8 @@
         levels: saved.levels && typeof saved.levels === "object" ? saved.levels : {},
         inventory: Array.isArray(saved.inventory) ? [...new Set(saved.inventory.filter(id => catalogue.rewards.some(item => item.id === id)))] : [],
         equipped: saved.equipped && typeof saved.equipped === "object" ? saved.equipped : {},
-        rewardedActivities: Array.isArray(saved.rewardedActivities) ? saved.rewardedActivities : []
+        rewardedActivities: Array.isArray(saved.rewardedActivities) ? saved.rewardedActivities : [],
+        rewardedQuestions: Array.isArray(saved.rewardedQuestions) ? saved.rewardedQuestions : []
       };
     } catch { return emptyState(); }
   };
@@ -29,6 +30,7 @@
   const getState = () => JSON.parse(JSON.stringify(state));
   const levelRecord = id => state.levels[id] || { bestStars: 0, completed: false, rewarded: false, bestPercent: 0 };
   const isUnlocked = level => {
+    if (!level) return false;
     if (level.number === 1) return true;
     const previous = catalogue.levels.find(item => item.number === level.number - 1);
     return Boolean(previous && levelRecord(previous.id).bestStars >= 1);
@@ -56,6 +58,14 @@
     const saved = persist();
     return { accepted: saved, stars, bestStars: state.levels[id].bestStars, improved, coinsAwarded };
   };
+  const awardQuestion = (questionId, xp = 20, coins = 5) => {
+    if (state.rewardedQuestions.includes(questionId)) return false;
+    state.rewardedQuestions.push(questionId);
+    state.coins += Math.max(0, Math.floor(coins));
+    persist();
+    return true;
+  };
+  const resetForCurrentLearner = () => { state = emptyState(); persist(); };
   const awardActivity = (activityId, coins = 10) => {
     if (state.rewardedActivities.includes(activityId)) return 0;
     state.rewardedActivities.push(activityId);
@@ -122,6 +132,11 @@
     });
     host.append(filter, grid); renderItems();
   };
+  const renderAvatarChip = () => {
+    const current = read(); state = current;
+    const item = catalogue.rewards.find(reward => reward.id === current.equipped.avatar);
+    document.querySelectorAll('.learner-chip-avatar').forEach(node => { if (item) { node.textContent = item.icon; node.classList.add('has-custom-avatar'); } else { node.classList.remove('has-custom-avatar'); } });
+  };
   const renderEquipped = () => {
     const host = document.querySelector("#equipped-rewards");
     if (!host) return;
@@ -166,7 +181,7 @@
   };
   const api = {
     getState, getLevels: () => catalogue.levels.map(level => ({ ...level })), getLevel: id => catalogue.levels.find(level => level.id === id),
-    getLevelRecord: levelRecord, isUnlocked, recordLevel, awardActivity, purchase, equip, renderShop, renderEquipped, renderMap,
+    getLevelRecord: levelRecord, isUnlocked, recordLevel, awardQuestion, awardActivity, purchase, equip, renderShop, renderEquipped, renderMap, resetForCurrentLearner,
     getCoins: () => read().coins, getEquipped: () => ({ ...read().equipped })
   };
   window.PlaygroundGamification = api;
