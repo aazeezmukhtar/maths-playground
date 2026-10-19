@@ -37,6 +37,7 @@
         points: 0, practiceCorrect: 0, practiceAnswered: 0,
         challengeCorrect: 0, challengeAnswered: 0, ...progress
       }));
+      document.dispatchEvent(new CustomEvent("learningprogresschange"));
     } catch { /* Activity works even if local storage is unavailable. */ }
   };
   const saveResult = (activityId, result) => {
@@ -47,6 +48,7 @@
       all[moduleId] = moduleProgress;
       localStorage.setItem(storageKey(), JSON.stringify(all));
     } catch { /* Activities still work when storage is unavailable. */ }
+    document.dispatchEvent(new CustomEvent("learningprogresschange"));
     renderSummary();
   };
   const getResult = id => readProgress()[id] || {};
@@ -101,7 +103,6 @@
   host.append(activitiesSection);
 
   function renderQuiz(activity, panel) {
-    const alreadyCompleted = Boolean(getResult(activity.id).complete);
     let index = 0;
     let selected = "";
     let checked = false;
@@ -167,7 +168,7 @@
         action.disabled = false;
         action.textContent = index === activity.questions.length - 1 ? "Finish quiz →" : "Next question →";
         if (index === activity.questions.length - 1) {
-          if (!alreadyCompleted) awardPoints(score);
+          if (!getResult(activity.id).complete) awardPoints(score);
           saveResult(activity.id, { complete: true, correct: correctCount, answered, points: score });
         }
       } else if (index < activity.questions.length - 1) {
@@ -192,7 +193,6 @@
   }
 
   function renderMatching(activity, panel) {
-    const alreadyCompleted = Boolean(getResult(activity.id).complete);
     const prompt = make("p", "matching-prompt", "First choose a word, then choose its meaning.");
     const board = make("div", "matching-board");
     const terms = make("div", "matching-column");
@@ -238,7 +238,7 @@
           feedback.textContent = matchedCount === pairs.length ? activity.successMessage : "That's a match! Find the next pair.";
           feedback.className = "reusable-feedback is-correct";
           if (matchedCount === pairs.length) {
-            if (!alreadyCompleted) awardPoints(matchedCount * 5);
+            if (!getResult(activity.id).complete) awardPoints(matchedCount * 5);
             saveResult(activity.id, { complete: true, matched: matchedCount, points: matchedCount * 5 });
           }
         } else {
