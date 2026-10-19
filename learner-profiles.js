@@ -252,7 +252,7 @@
     addBack(renderManageProfiles);
   };
   const backupKeys = () => {
-    const keys = [PROFILES_KEY, LEGACY_PROGRESS, LEGACY_ACTIVITIES];
+    const keys = [PROFILES_KEY, LEGACY_PROGRESS, LEGACY_ACTIVITIES, GAMIFICATION_KEY];
     readProfiles().forEach(p => keys.push("maths-playground-profile-" + p.id + "-progress-v1", "maths-playground-profile-" + p.id + "-learning-activities-v1", "maths-playground-profile-" + p.id + "-gamification-v1"));
     return [...new Set(keys)];
   };
@@ -277,7 +277,7 @@
         incoming.forEach(p => { if (p && typeof p.id === "string" && typeof p.name === "string") merged.set(p.id, p); });
         if (merged.size > 30) throw new Error("This backup would exceed the 30-profile limit.");
         Object.entries(data.storage).forEach(([key, value]) => {
-          if (key === PROFILES_KEY || key === LEGACY_PROGRESS || key === LEGACY_ACTIVITIES || /^maths-playground-profile-[a-zA-Z0-9-]+-(?:progress|learning-activities|gamification)-v1$/.test(key)) {
+          if (key === PROFILES_KEY || key === LEGACY_PROGRESS || key === LEGACY_ACTIVITIES || key === GAMIFICATION_KEY || /^maths-playground-profile-[a-zA-Z0-9-]+-(?:progress|learning-activities|gamification)-v1$/.test(key)) {
             if (typeof value === "string") nativeSet(key, value);
           }
         });
