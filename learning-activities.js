@@ -26,6 +26,18 @@
       return all[moduleId] || {};
     } catch { return {}; }
   };
+  const awardPoints = points => {
+    if (!Number.isFinite(points) || points <= 0) return;
+    try {
+      const key = "maths-playground-progress-v1";
+      const progress = JSON.parse(localStorage.getItem(key) || "{}");
+      progress.points = Math.max(0, Number(progress.points) || 0) + points;
+      localStorage.setItem(key, JSON.stringify({
+        points: 0, practiceCorrect: 0, practiceAnswered: 0,
+        challengeCorrect: 0, challengeAnswered: 0, ...progress
+      }));
+    } catch { /* Activity works even if local storage is unavailable. */ }
+  };
   const saveResult = (activityId, result) => {
     try {
       const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -88,6 +100,7 @@
   host.append(activitiesSection);
 
   function renderQuiz(activity, panel) {
+    const alreadyCompleted = Boolean(getResult(activity.id).complete);
     let index = 0;
     let selected = "";
     let checked = false;
@@ -153,6 +166,7 @@
         action.disabled = false;
         action.textContent = index === activity.questions.length - 1 ? "Finish quiz →" : "Next question →";
         if (index === activity.questions.length - 1) {
+          if (!alreadyCompleted) awardPoints(score);
           saveResult(activity.id, { complete: true, correct: correctCount, answered, points: score });
         }
       } else if (index < activity.questions.length - 1) {
@@ -168,7 +182,8 @@
         action.textContent = "Try again";
         action.onclick = null;
         action.replaceWith(button("Try again ↻", "activity-primary-button", () => {
-          index = 0; selected = ""; checked = false; score = 0; correctCount = 0; answered = 0; drawQuestion();
+          panel.replaceChildren();
+          renderQuiz(activity, panel);
         }));
       }
     }
@@ -176,6 +191,7 @@
   }
 
   function renderMatching(activity, panel) {
+    const alreadyCompleted = Boolean(getResult(activity.id).complete);
     const prompt = make("p", "matching-prompt", "First choose a word, then choose its meaning.");
     const board = make("div", "matching-board");
     const terms = make("div", "matching-column");
@@ -220,7 +236,10 @@
           termButtons.forEach(item => item.setAttribute("aria-pressed", "false"));
           feedback.textContent = matchedCount === pairs.length ? activity.successMessage : "That's a match! Find the next pair.";
           feedback.className = "reusable-feedback is-correct";
-          if (matchedCount === pairs.length) saveResult(activity.id, { complete: true, matched: matchedCount, points: matchedCount * 5 });
+          if (matchedCount === pairs.length) {
+            if (!alreadyCompleted) awardPoints(matchedCount * 5);
+            saveResult(activity.id, { complete: true, matched: matchedCount, points: matchedCount * 5 });
+          }
         } else {
           feedback.textContent = "Not that one. Try another meaning.";
           feedback.className = "reusable-feedback is-try-again";
