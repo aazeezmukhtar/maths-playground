@@ -108,7 +108,7 @@
   };
   const enterProfile = profile => {
     try { sessionStorage.setItem(ACTIVE_KEY, profile.id); } catch {}
-    currentProfile = profile; hideOverlay(); dispatchProfileChange();
+    currentProfile = profile; hideOverlay(); dispatchProfileChange(); window.location.reload();
   };
   const renderChooser = () => {
     showOverlay();
