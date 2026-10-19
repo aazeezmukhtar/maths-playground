@@ -3,11 +3,11 @@
 window.PLAYGROUND_GAMIFICATION = {
   version: 1,
   levels: [
-    { id: "fraction-1", number: 1, title: "Meet the Fractions", subtitle: "Spot the biggest and smallest fractions.", questionIndexes: [0, 1] },
-    { id: "fraction-2", number: 2, title: "Equivalent Explorers", subtitle: "Find fractions that name the same amount.", questionIndexes: [2, 7] },
-    { id: "fraction-3", number: 3, title: "Fraction Detectives", subtitle: "Solve missing numbers and spot mistakes.", questionIndexes: [4, 5] },
-    { id: "fraction-4", number: 4, title: "Compare Champions", subtitle: "Compare fractions with confidence.", questionIndexes: [3, 9] },
-    { id: "fraction-5", number: 5, title: "Fraction Master", subtitle: "Finish the number-line and mixed challenge.", questionIndexes: [6, 8] }
+    { id: "fraction-1", number: 1, title: "Meet the Fractions", subtitle: "Spot the biggest and smallest fractions.", questionIndexes: [0, 1, 3, 8, 9] },
+    { id: "fraction-2", number: 2, title: "Equivalent Explorers", subtitle: "Find fractions that name the same amount.", questionIndexes: [2, 7, 0, 1, 8] },
+    { id: "fraction-3", number: 3, title: "Fraction Detectives", subtitle: "Solve missing numbers and spot mistakes.", questionIndexes: [4, 5, 2, 7, 6] },
+    { id: "fraction-4", number: 4, title: "Compare Champions", subtitle: "Compare fractions with confidence.", questionIndexes: [3, 9, 0, 1, 6] },
+    { id: "fraction-5", number: 5, title: "Fraction Master", subtitle: "Finish the number-line and mixed challenge.", questionIndexes: [6, 8, 4, 5, 7] }
   ],
   rewards: [
     { id: "avatar-lion", category: "Avatars", name: "Brave Lion", icon: "🦁", price: 100, kind: "avatar" },
