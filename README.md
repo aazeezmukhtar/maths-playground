@@ -8,6 +8,8 @@ The app is static and account-free: learners can open the shared link without cr
 
 - **Home dashboard:** module navigation, points total, and a quick view of learning activity.
 - **Shared module foundation:** reusable module metadata, learning goals, lesson/activity sequence, topic tags, and responsive overview renderer.
+- **Written lessons and reusable activities:** a worked fraction lesson, a multiple-choice quick check, and a matching activity with hints, explanations, feedback, and local completion status.
+- **Activity rewards:** first-time completion can add points to the existing local progress total without resetting existing progress; detailed activity completion is stored separately on the device.
 - **Fraction Fun module overview:** learning goals and linked Learn, Practise, and Challenge activities before the existing interactive workspace.
 - **Fraction Fun — Learn:** visual explanation of numerator and denominator, plus a tappable pizza model.
 - **Fraction Fun — Practise:** multiple-choice questions, hints, feedback, and points.
@@ -45,6 +47,8 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 - `subjects/logic/index.html` — logic and thinking directory
 - `data/learning-catalog.js` — shared subject, module, age-stage, and curriculum-tag metadata
 - `data/module-content.js` — detailed module content schema (overview, goals, lesson sequence, topics, progress policy)
+- `data/activities.js` — written lesson content and structured activity questions/matching pairs
+- `learning-activities.js` and `learning-activities.css` — reusable lesson, quiz, matching renderer, and responsive styles
 - `learning-module.js` and `learning-module.css` — reusable module overview renderer and responsive styles
 - `catalog.js` and `catalog.css` — reusable catalogue renderer and responsive card styles
 - `styles.css` — shared responsive design and page layouts
