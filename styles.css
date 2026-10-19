@@ -106,3 +106,22 @@
   .topbar .learner-chip-name,.topbar .learner-switch-button small{display:none!important}
   .topbar .learner-manage-shortcut{display:none!important}
 }
+
+
+/* Phase 6: learner progress and achievement summaries */
+.learning-achievements{margin:24px 0 34px;padding:clamp(18px,4vw,28px);border:1px solid var(--line);border-radius:22px;background:#fff;min-width:0}
+.achievements-heading{max-width:680px;margin-bottom:18px}
+.achievements-heading h2{margin:5px 0 8px;font:900 clamp(20px,3vw,27px) 'Nunito',sans-serif;color:var(--ink)}
+.achievements-heading p:last-child{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.achievement-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.achievement-card{display:grid;align-content:start;justify-items:start;gap:7px;min-width:0;padding:13px;border:1px solid var(--line);border-radius:15px;background:#f7f9fa}
+.achievement-card.is-earned{border-color:#f0d27a;background:#fff9e7}
+.achievement-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:#eaf0f3;font-size:21px}
+.achievement-card.is-earned .achievement-icon{background:#ffedb5}
+.achievement-card strong{font-size:12px;line-height:1.35;color:var(--ink)}
+.achievement-card p{margin:0;font-size:10px;line-height:1.5;color:var(--muted)}
+.achievement-state{font-size:9px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#66717a}
+.achievement-card.is-earned .achievement-state{color:#795b00}
+@media(max-width:760px){.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.achievement-card:last-child{grid-column:span 2}}
+@media(max-width:420px){.learning-achievements{padding:16px 12px}.achievement-grid{gap:7px}.achievement-card{padding:10px}.achievement-card strong{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.achievement-card,.achievement-icon{transition:none!important;animation:none!important}}
