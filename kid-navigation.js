@@ -9,6 +9,27 @@
     scrollTo("#fraction-workspace");
   };
   document.addEventListener("DOMContentLoaded", () => {
+    const agePathPicker = document.querySelector("[data-age-path-picker]");
+    if (agePathPicker) {
+      agePathPicker.querySelectorAll("[data-age-path]").forEach(button => {
+        button.addEventListener("click", () => {
+          const path = button.dataset.agePath;
+          document.documentElement.dataset.agePath = path;
+          try { localStorage.setItem("maths-playground-age-path-v1", path); } catch (_) {}
+          agePathPicker.querySelectorAll("[data-age-path]").forEach(card => card.setAttribute("aria-pressed", String(card === button)));
+          const target = path === "early" ? '[data-fraction-activity="learn"]' : path === "primary" ? '[data-fraction-activity="shade"]' : '[data-fraction-activity="adventure"]';
+          const activity = document.querySelector(target);
+          if (activity) activity.click();
+        });
+      });
+      try {
+        const saved = localStorage.getItem("maths-playground-age-path-v1");
+        if (saved) {
+          document.documentElement.dataset.agePath = saved;
+          agePathPicker.querySelectorAll("[data-age-path]").forEach(card => card.setAttribute("aria-pressed", String(card.dataset.agePath === saved)));
+        }
+      } catch (_) {}
+    }
     document.querySelectorAll("[data-fraction-activity]").forEach(button => {
       button.addEventListener("click", () => {
         const action = button.dataset.fractionActivity;

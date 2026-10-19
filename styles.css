@@ -156,3 +156,13 @@
 @media(max-width:760px){.fraction-activity-launcher{margin:0 12px 24px;padding:18px 13px;border-radius:20px}.fraction-activity-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.fraction-activity-card{min-height:125px;align-items:flex-start;flex-wrap:wrap;gap:9px;padding:12px;border-radius:16px}.fraction-activity-emoji{width:42px;height:42px;flex-basis:42px;border-radius:13px;font-size:24px}.fraction-activity-copy{flex-basis:calc(100% - 52px)}.fraction-activity-copy strong{font-size:13px}.fraction-activity-copy small{font-size:10px}.fraction-activity-arrow{display:none}}
 @media(max-width:360px){.fraction-activity-grid{grid-template-columns:1fr}.fraction-activity-card{min-height:80px;align-items:center;flex-wrap:nowrap}.fraction-activity-copy{flex-basis:auto}.fraction-activity-arrow{display:block}}
 @media(prefers-reduced-motion:reduce){.fraction-activity-card{transition:none}}
+
+/* Official Al-Jaleel Academy identity */
+.brand-logo{width:42px;height:42px;object-fit:contain;flex:0 0 42px;border-radius:12px}
+.age-path-picker{max-width:1124px;margin:0 auto 28px;padding:22px;border-radius:24px;background:#fff;border:1px solid var(--line)}
+.age-path-heading{text-align:center;margin-bottom:18px}.age-path-heading h2{font:900 clamp(22px,3vw,29px)/1.2 'Nunito',sans-serif;margin:0 0 7px}.age-path-heading p{font-size:13px;color:var(--muted);margin:0}
+.age-path-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.age-path-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;min-height:152px;padding:17px;border:2px solid transparent;border-radius:19px;text-align:left;cursor:pointer;color:var(--ink)}
+.age-path-card strong{font:900 16px/1.25 'Nunito',sans-serif}.age-path-card small{font-size:12px;line-height:1.4;color:#4e5964}.age-path-card .age-emoji{font-size:30px}.age-path-card:focus-visible{outline:4px solid #001c2c;outline-offset:3px}
+.age-path-early{background:#e2f7ec;border-color:#a8e8c7}.age-path-primary{background:#fff0c8;border-color:#f4d77d}.age-path-explorer{background:#e5e8ff;border-color:#bfc5ff}
+@media(max-width:700px){.age-path-picker{margin:0 12px 22px;padding:16px}.age-path-options{grid-template-columns:1fr}.age-path-card{min-height:90px;display:grid;grid-template-columns:44px 1fr;align-items:center;column-gap:12px;padding:13px}.age-path-card .age-emoji{grid-row:span 2}.age-path-card strong,.age-path-card small{grid-column:2}}
