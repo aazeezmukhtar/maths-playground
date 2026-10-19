@@ -125,3 +125,20 @@
 @media(max-width:760px){.achievement-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.achievement-card:last-child{grid-column:span 2}}
 @media(max-width:420px){.learning-achievements{padding:16px 12px}.achievement-grid{gap:7px}.achievement-card{padding:10px}.achievement-card strong{font-size:11px}}
 @media(prefers-reduced-motion:reduce){.achievement-card,.achievement-icon{transition:none!important;animation:none!important}}
+
+/* Child-first navigation */
+.kid-quick-start{max-width:1124px;margin:0 auto 30px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.kid-action-card{min-height:106px;display:flex;align-items:center;gap:13px;padding:18px;border-radius:22px;border:2px solid transparent;background:#fff;box-shadow:0 7px 22px #22294b0d;transition:transform .16s,box-shadow .16s}
+.kid-action-card:hover,.kid-big-button:hover{transform:translateY(-2px);box-shadow:0 12px 25px #22294b18}
+.kid-action-card>span:nth-child(2){display:grid;gap:5px;min-width:0;flex:1}.kid-action-card strong{font-family:'Nunito',sans-serif;font-size:17px;font-weight:900}.kid-action-card small{font-size:12px;color:#606682;line-height:1.35}.kid-action-card>b{font-size:22px}
+.kid-action-emoji{width:52px;height:52px;display:grid;place-items:center;flex-shrink:0;border-radius:17px;font-size:28px;background:#fff}
+.kid-play{background:#fff0c7;border-color:#f8d56f}.kid-learn{background:#e1f7ec;border-color:#a8e8c7}.kid-rewards{background:#fce4ed;border-color:#f5b7cf}
+.parent-progress,.more-subjects{max-width:1124px;margin:0 auto 28px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:15px 20px}
+.parent-progress>summary,.more-subjects>summary{cursor:pointer;font-weight:800;font-size:14px;padding:5px;list-style:none}.parent-progress>summary::-webkit-details-marker,.more-subjects>summary::-webkit-details-marker{display:none}
+.parent-progress[open] .dashboard-summary{margin-top:16px}.parent-progress .learning-achievements{margin-top:20px}
+.kid-adventure-panel{border:2px solid #f5d67d!important;background:linear-gradient(140deg,#fffdf6,#fff)!important}
+.kid-rewards-panel{scroll-margin-top:18px}
+.kid-module-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+.kid-big-button{min-height:54px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 19px;border-radius:16px;border:2px solid transparent;font-weight:900;font-size:15px;transition:transform .16s,box-shadow .16s}
+.kid-module-actions .kid-play{color:#4b3500}.kid-module-actions .kid-learn{color:#075c3b}.kid-module-actions .kid-rewards{color:#8b244c}
+@media(max-width:700px){.kid-quick-start{grid-template-columns:1fr;gap:10px;padding:0 14px}.kid-action-card{min-height:82px;padding:13px 15px}.kid-action-emoji{width:48px;height:48px}.kid-action-card strong{font-size:16px}.parent-progress,.more-subjects{margin-left:14px;margin-right:14px}.kid-module-actions{display:grid;grid-template-columns:1fr}.kid-big-button{width:100%;min-height:58px;font-size:16px}.hero-card{margin-left:12px;margin-right:12px}}
