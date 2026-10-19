@@ -9,12 +9,15 @@
   <link rel="manifest" href="../../manifest.webmanifest">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A9%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="../../styles.css">
+  <link rel="stylesheet" href="../../gamification.css">
   <link rel="stylesheet" href="../../learning-module.css">
   <script src="../../data/module-content.js" defer></script>
   <script src="../../learning-module.js" defer></script>
   <link rel="stylesheet" href="../../learning-activities.css">
   <script src="../../data/activities.js" defer></script>
   <script src="../../learner-profiles.js" defer></script>
+  <script src="../../data/gamification.js" defer></script>
+  <script src="../../gamification.js" defer></script>
   <script src="../../learning-activities.js" defer></script>
   <script src="../../app.js" defer></script>
   <link rel="stylesheet" href="../../learner-profiles.css">
@@ -29,6 +32,8 @@
     <div class="module-page-intro"><a class="back-link" href="../../subjects/mathematics/">← Mathematics modules</a><p class="eyebrow">MODULE 01 · AGES 7–12</p><h1>Fraction Fun</h1><p>Slice it, share it, compare it! Learn fractions one playful step at a time.</p></div>
         <div data-learning-module="fractions"></div>
         <div class="learning-content-library" data-learning-activities="fractions"></div>
+        <section class="gamification-panel" aria-labelledby="adventure-section-title"><div class="section-heading"><div><p class="eyebrow">YOUR NEXT ADVENTURE</p><h2 id="adventure-section-title">Challenge map</h2></div></div><div id="challenge-map"></div><p class="gamification-note">Earn at least one star to open the next level. XP is your lifetime learning progress; coins are for shop items.</p></section>
+        <section class="gamification-panel" aria-labelledby="shop-section-title"><div class="section-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="shop-section-title">Personalise your profile</h2></div></div><div id="equipped-rewards"></div><div id="rewards-shop"></div></section>
         <section class="learning-panel" id="fraction-workspace" aria-labelledby="workspace-title">
       <div class="workspace-heading">
         <div><p class="eyebrow">MODULE 01 · FRACTIONS</p><h2 id="workspace-title">Let’s explore fractions!</h2><p>Every fraction tells a story about equal parts. Let's discover yours.</p></div>
@@ -67,9 +72,9 @@
       </div>
 
       <div class="activity-panel" id="panel-challenge" role="tabpanel" aria-labelledby="tab-challenge" data-activity="challenge" hidden>
-        <div class="quiz-card challenge-card">
+        <div class="quiz-card challenge-card" id="challenge-card">
           <div class="quiz-topline"><span class="lesson-step">BRAIN POWER</span><span class="question-counter" id="challenge-counter">QUESTION 1</span><span class="challenge-badge">⭐ 20 POINTS</span></div>
-          <h3 id="challenge-question">Which fraction is the largest?</h3>
+          <h3 id="challenge-level-title">Meet the Fractions</h3><h3 id="challenge-question">Which fraction is the largest?</h3>
           <p class="challenge-intro">A mixed round of fraction puzzles: compare, find equals, spot mistakes, and think on the number line.</p>
           <div class="challenge-visuals" id="challenge-visuals"></div>
           <div class="answer-grid" id="challenge-answers" role="group" aria-label="Choose your answer"></div>
