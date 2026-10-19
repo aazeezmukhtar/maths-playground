@@ -168,7 +168,7 @@
         action.disabled = false;
         action.textContent = index === activity.questions.length - 1 ? "Finish quiz →" : "Next question →";
         if (index === activity.questions.length - 1) {
-          if (!getResult(activity.id).complete) awardPoints(score);
+          if (!getResult(activity.id).complete) { awardPoints(score); if (window.PlaygroundGamification) window.PlaygroundGamification.awardActivity(moduleId + '-' + activity.id, 10); }
           saveResult(activity.id, { complete: true, correct: correctCount, answered, points: score });
         }
       } else if (index < activity.questions.length - 1) {
@@ -238,7 +238,7 @@
           feedback.textContent = matchedCount === pairs.length ? activity.successMessage : "That's a match! Find the next pair.";
           feedback.className = "reusable-feedback is-correct";
           if (matchedCount === pairs.length) {
-            if (!getResult(activity.id).complete) awardPoints(matchedCount * 5);
+            if (!getResult(activity.id).complete) { awardPoints(matchedCount * 5); if (window.PlaygroundGamification) window.PlaygroundGamification.awardActivity(moduleId + '-' + activity.id, 10); }
             saveResult(activity.id, { complete: true, matched: matchedCount, points: matchedCount * 5 });
           }
         } else {
