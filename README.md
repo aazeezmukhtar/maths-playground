@@ -2,7 +2,7 @@
 
 A playful, mobile-first learning app from Al-Jaleel Academy for Nursery and Primary learners aged 4–12. The app is designed to grow from its existing maths activities into a broader library of written lessons and interactive learning games. Its visual identity uses deep blue (`#001C2C`), golden yellow (`#FBBA00`), and white, with the school motto “Igniting a Brighter Future.”
 
-The app is static and account-free: learners can open the shared link without creating an account. Progress is stored locally on each device and does not sync between devices. Other schools can use the same shared app link; school-specific customisation is not part of this version. Each learning module has its own page so learners can move between activities without scrolling through one long page.
+The app is static and uses local learner profiles rather than online accounts. Each learner has a 4-digit PIN and a parent/teacher recovery code; profiles, points, and activity progress stay in this browser and do not sync between devices. PINs are a convenience lock, not device-level security. Export backups before clearing browser data or changing devices. Other schools can use the same shared app link; school-specific customisation is not part of this version. Each learning module has its own page so learners can move between activities without scrolling through one long page.
 
 ## Current MVP
 
@@ -21,7 +21,8 @@ The app is static and account-free: learners can open the shared link without cr
 - Local progress saved on the learner's device and shared between pages on the same site.
 - Responsive layout, keyboard-friendly tabs, accessible feedback, and optional sound effects on the home page.
 - PWA manifest and service worker for offline app-shell caching.
-- No account, backend, advertisements, or tracking.
+- PIN-protected local learner profiles, parent/teacher PIN recovery, profile switching, rename/delete, and local JSON backup export/import.
+- No online account, backend, advertisements, or tracking.
 
 ## Run locally
 
@@ -52,7 +53,8 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 - `learning-module.js` and `learning-module.css` — reusable module overview renderer and responsive styles
 - `catalog.js` and `catalog.css` — reusable catalogue renderer and responsive card styles
 - `styles.css` — shared responsive design and page layouts
-- `app.js` — activity logic and shared local progress
+- `app.js` — activity logic and profile-scoped local progress
+- `learner-profiles.js` and `learner-profiles.css` — local profiles, PIN verification, recovery, and backup tools
 - `manifest.webmanifest` — installable app metadata
 - `service-worker.js` — offline app-shell caching
 
@@ -69,4 +71,4 @@ The catalogue defines three flexible learning stages: Early Years (ages 4–5), 
 
 ## Notes
 
-Progress is stored in browser local storage on the current device and is shared by the app's pages on the same origin. It does not sync between devices. This is an early MVP; test navigation, learning activities, and offline behaviour on target phones and browsers before classroom-wide use.
+Profiles and progress are stored in browser local storage on the current device and are separated by learner. They do not sync between devices. Export a backup before clearing site data. PIN protection is intended to prevent casual profile switching, not to protect against someone with technical access to the browser storage. This is an early MVP; test navigation, learning activities, and offline behaviour on target phones and browsers before classroom-wide use.
