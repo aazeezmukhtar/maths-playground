@@ -9,6 +9,30 @@
     scrollTo("#fraction-workspace");
   };
   document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll("[data-fraction-activity]").forEach(button => {
+      button.addEventListener("click", () => {
+        const action = button.dataset.fractionActivity;
+        const goToWorkspace = panel => {
+          const tab = one('[data-panel="' + panel + '"]');
+          if (tab) tab.click();
+          scrollTo("#fraction-workspace");
+        };
+        if (action === "learn") { goToWorkspace("learn"); return; }
+        if (["shade", "match", "compare", "detective"].includes(action)) {
+          goToWorkspace("practice");
+          const activity = one('[data-practice-mode="' + action + '"]');
+          if (activity) activity.click();
+          return;
+        }
+        if (action === "adventure") {
+          const map = one("#challenge-map");
+          const firstOpen = map && [...map.querySelectorAll(".adventure-level:not(.is-locked)")][0];
+          if (firstOpen) firstOpen.click();
+          else goToWorkspace("challenge");
+          scrollTo("#challenge-card");
+        }
+      });
+    });
     document.querySelectorAll("[data-kid-action]").forEach(button => {
       button.addEventListener("click", () => {
         const action = button.dataset.kidAction;
