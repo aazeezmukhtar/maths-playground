@@ -14,6 +14,7 @@
   <script src="./catalog.js" defer></script>
   <script src="./learner-profiles.js" defer></script>
   <script src="./app.js" defer></script>
+  <script src="./progress-dashboard.js" defer></script>
   <link rel="stylesheet" href="./learner-profiles.css">
 </head>
 <body class="home-page">
@@ -37,6 +38,10 @@
       <div><span class="summary-icon">🌟</span><div><strong id="dashboard-points">0</strong><span>Total points earned</span></div></div>
       <div><span class="summary-icon">🎯</span><div><strong id="dashboard-practice">0</strong><span>Practice questions tried</span></div></div>
       <div><span class="summary-icon">🏆</span><div><strong id="dashboard-challenges">0</strong><span>Challenges attempted</span></div></div>
+    </section>
+    <section class="learning-achievements" aria-labelledby="achievements-title">
+      <div class="achievements-heading"><p class="eyebrow">YOUR LITTLE WINS</p><h2 id="achievements-title">Progress and achievements</h2><p id="progress-summary" aria-live="polite">Every question you try is a step forward.</p></div>
+      <div class="achievement-grid" id="achievement-grid" aria-label="Learning achievements"></div>
     </section>
     <section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">Choose a subject</h2></div><a class="coming-label" href="./subjects/">Explore all subjects <span aria-hidden="true">→</span></a></section>
     <section class="catalog-grid home-catalog-grid" data-catalog-view="subjects" aria-label="Learning subjects"></section>
