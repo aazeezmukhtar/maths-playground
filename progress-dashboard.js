@@ -16,7 +16,7 @@
     { id: "practice-star", icon: "⭐", title: "Practice Star", description: "Answer five practice questions correctly.", earned: s => s.practiceCorrect >= 5 },
     { id: "challenge-explorer", icon: "🧭", title: "Challenge Explorer", description: "Try five challenge questions.", earned: s => s.challenges >= 5 },
     { id: "activity-finisher", icon: "🏅", title: "Activity Finisher", description: "Complete two learning activities.", earned: s => s.completed >= 2 },
-    { id: "point-collector", icon: "💛", title: "Point Collector", description: "Collect 100 learning points.", earned: s => s.points >= 100 }
+    { id: "point-collector", icon: "💛", title: "XP Collector", description: "Collect 100 experience points.", earned: s => s.points >= 100 }
   ];
   function getStats() {
     const progress = read(progressKey);
@@ -40,7 +40,7 @@
     if (!grid || !summary) return;
     const stats = getStats();
     const earned = achievements.filter(item => item.earned(stats)).length;
-    summary.textContent = `You have ${stats.points} points, completed ${stats.completed} learning activities, and tried ${stats.questions + stats.challenges} questions. ${earned} of ${achievements.length} achievements unlocked — keep going!`;
+    summary.textContent = `You have ${stats.points} XP, completed ${stats.completed} learning activities, and tried ${stats.questions + stats.challenges} questions. ${earned} of ${achievements.length} achievements unlocked — keep going!`;
     grid.replaceChildren();
     achievements.forEach(item => {
       const unlocked = item.earned(stats);

@@ -10,6 +10,7 @@ The app is static and uses local learner profiles rather than online accounts. E
 - **Shared module foundation:** reusable module metadata, learning goals, lesson/activity sequence, topic tags, and responsive overview renderer.
 - **Written lessons and reusable activities:** a worked fraction lesson, a multiple-choice quick check, and a matching activity with hints, explanations, feedback, and local completion status.
 - **Activity rewards:** first-time completion can add points to the existing local progress total without resetting existing progress; detailed activity completion is stored separately on the device.
+- **Gamification foundation (Phase 6B):** a five-stop Fraction Fun adventure map, three-star level scoring, next-level unlocks after at least one star, separate XP and spendable coins, and a local rewards shop for avatars, backgrounds, stickers, outfits, and profile decorations. All new records are scoped to the active learner and included in backup/restore.
 - **Fraction Fun module overview:** learning goals and linked Learn, Practise, and Challenge activities before the existing interactive workspace.
 - **Fraction Fun — Learn:** visual explanation of numerator and denominator, plus a tappable pizza model.
 - **Fraction Fun — Practise:** multiple-choice questions, hints, feedback, and points.
@@ -54,6 +55,8 @@ You can also deploy the repository as a static site on GitHub Pages or another s
 - `catalog.js` and `catalog.css` — reusable catalogue renderer and responsive card styles
 - `styles.css` — shared responsive design and page layouts
 - `app.js` — activity logic and profile-scoped local progress
+- `data/gamification.js` — stable challenge level and cosmetic reward catalogue
+- `gamification.js` and `gamification.css` — local level/star progression, coin wallet, rewards shop, and responsive adventure map
 - `learner-profiles.js` and `learner-profiles.css` — local profiles, PIN verification, recovery, and backup tools
 - `manifest.webmanifest` — installable app metadata
 - `service-worker.js` — offline app-shell caching
