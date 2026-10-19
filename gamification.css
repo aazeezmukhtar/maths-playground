@@ -3,3 +3,10 @@
 body[data-playground-background="background-rainbow"] .hero-card,body[data-playground-background="background-rainbow"] .module-page-intro{background:linear-gradient(125deg,#fff1c6,#ffe4f0,#e3f6ff)}
 body[data-playground-background="background-space"] .hero-card,body[data-playground-background="background-space"] .module-page-intro{background:linear-gradient(125deg,#001c2c,#243b67);color:#fff}
 body[data-playground-background="background-space"] .hero-card h1,body[data-playground-background="background-space"] .hero-copy>p,body[data-playground-background="background-space"] .module-page-intro h1,body[data-playground-background="background-space"] .module-page-intro p{color:#fff}
+
+/* Easier-to-scan adventure buttons for young learners */
+.adventure-level{min-height:142px;padding:16px 12px;border-radius:22px;gap:8px;box-shadow:0 5px 0 #001c2c12}
+.adventure-level .adventure-number{width:48px;height:48px;font-size:23px;border-radius:16px}
+.adventure-level strong{font-size:15px;line-height:1.25}.adventure-level small{font-size:12px;line-height:1.35}.adventure-stars{font-size:20px;letter-spacing:2px}
+.adventure-level:not(.is-locked){cursor:pointer}.adventure-level:not(.is-locked):active{transform:translateY(2px);box-shadow:none}
+@media(max-width:560px){.adventure-path{grid-template-columns:repeat(2,minmax(0,1fr))}.adventure-level{min-height:148px}.adventure-heading{align-items:flex-start;gap:10px}.adventure-heading h3{font-size:19px}}
