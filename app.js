@@ -44,6 +44,7 @@ function loadProgress() {
 function saveProgress() {
   try { localStorage.setItem(getProgressStorageKey(), JSON.stringify(progress)); } catch { /* Storage may be disabled. */ }
   renderProgress();
+  document.dispatchEvent(new CustomEvent('learningprogresschange'));
 }
 function renderProgress() {
   const totalPoints = $('#total-points');
@@ -321,9 +322,10 @@ if ($('#fraction-workspace')) {
  $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
  renderPracticeMenu();
  bindHint('#challenge-hint','#challenge-hint-message',()=>challengeQuestions[challengeIndex%challengeQuestions.length].hint);
- $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset your points and learning progress on this device?'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;activePracticeMode=null;saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
+ $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset this learner’s points, question totals, and completed lesson activities? This cannot be undone.'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;activePracticeMode=null;try{const activityKey=window.LearnerProfiles?window.LearnerProfiles.storageKey('maths-playground-learning-activities-v1'):'maths-playground-learning-activities-v1';localStorage.setItem(activityKey,'{}');}catch{}saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
  renderPizza();renderPracticeMenu();renderChallenge();
 }
+document.addEventListener('learningprogresschange',()=>{progress=loadProgress();renderProgress();});
 const soundToggle=$('#sound-toggle');
 if(soundToggle)soundToggle.addEventListener('click',()=>{soundEnabled=!soundEnabled;soundToggle.textContent=soundEnabled?'🔊':'🔈';soundToggle.setAttribute('aria-pressed',String(soundEnabled));soundToggle.setAttribute('aria-label',soundEnabled?'Turn sound effects off':'Turn sound effects on');if(soundEnabled)playTone(true);});
 renderProgress();
