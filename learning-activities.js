@@ -266,7 +266,7 @@
     host.querySelectorAll("[data-result-for]").forEach(node => {
       const result = saved[node.dataset.resultFor];
       node.textContent = result && result.complete
-        ? "✓ Completed · " + (result.points || 0) + " activity points"
+        ? "✓ Completed · " + (result.points || 0) + " XP"
         : "Not completed yet";
       node.classList.toggle("has-saved-result", Boolean(result && result.complete));
     });
