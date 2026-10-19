@@ -6,7 +6,7 @@ The app is static and uses local learner profiles rather than online accounts. E
 
 ## Current MVP
 
-- **Home dashboard:** module navigation, points total, and a quick view of learning activity.
+- **Home dashboard:** module navigation, points total, learning activity summary, and five progress-based achievements that update from local learner progress.
 - **Shared module foundation:** reusable module metadata, learning goals, lesson/activity sequence, topic tags, and responsive overview renderer.
 - **Written lessons and reusable activities:** a worked fraction lesson, a multiple-choice quick check, and a matching activity with hints, explanations, feedback, and local completion status.
 - **Activity rewards:** first-time completion can add points to the existing local progress total without resetting existing progress; detailed activity completion is stored separately on the device.
