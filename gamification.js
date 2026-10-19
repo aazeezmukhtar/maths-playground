@@ -135,7 +135,19 @@
   const renderAvatarChip = () => {
     const current = read(); state = current;
     const item = catalogue.rewards.find(reward => reward.id === current.equipped.avatar);
-    document.querySelectorAll('.learner-chip-avatar').forEach(node => { if (item) { node.textContent = item.icon; node.classList.add('has-custom-avatar'); } else { node.classList.remove('has-custom-avatar'); } });
+    document.body.dataset.playgroundBackground = current.equipped.background || "";
+    document.querySelectorAll('.learner-chip-avatar').forEach(node => {
+      if (item) { node.textContent = item.icon; node.classList.add('has-custom-avatar'); }
+      else { node.classList.remove('has-custom-avatar'); }
+      const chip = node.parentElement;
+      if (!chip) return;
+      chip.querySelectorAll('.learner-chip-extra').forEach(extra => extra.remove());
+      ['sticker', 'outfit', 'decoration'].forEach(kind => {
+        const reward = catalogue.rewards.find(entry => entry.id === current.equipped[kind]);
+        if (!reward) return;
+        const extra = document.createElement('span'); extra.className = 'learner-chip-extra ' + kind; extra.textContent = reward.icon; extra.title = reward.name; extra.setAttribute('aria-hidden', 'true'); chip.append(extra);
+      });
+    });
   };
   const renderEquipped = () => {
     const host = document.querySelector("#equipped-rewards");
