@@ -171,6 +171,7 @@
       const stars = document.createElement("span"); stars.className = "adventure-stars"; stars.textContent = "★".repeat(record.bestStars) + "☆".repeat(3 - record.bestStars); stars.setAttribute("aria-label", record.bestStars + " of 3 stars");
       card.append(number, name, detail, stars);
       if (unlocked) card.addEventListener("click", () => {
+        if (!document.querySelector("#challenge-card")) { location.href = "./modules/fractions/?level=" + encodeURIComponent(level.id); return; }
         document.dispatchEvent(new CustomEvent("challengelevelselected", { detail: { levelId: level.id } }));
         const challenge = document.querySelector("#challenge-card");
         if (challenge) challenge.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -185,7 +186,7 @@
     getCoins: () => read().coins, getEquipped: () => ({ ...read().equipped })
   };
   window.PlaygroundGamification = api;
-  document.addEventListener("learnerprofilechange", () => { state = read(); renderMap(); renderShop(); renderEquipped(); });
-  document.addEventListener("gamificationchange", () => { state = read(); renderMap(); renderShop(); renderEquipped(); });
-  document.addEventListener("DOMContentLoaded", () => { renderMap(); renderShop(); renderEquipped(); });
+  document.addEventListener("learnerprofilechange", () => { state = read(); renderMap(); renderShop(); renderEquipped(); renderAvatarChip(); });
+  document.addEventListener("gamificationchange", () => { state = read(); renderMap(); renderShop(); renderEquipped(); renderAvatarChip(); });
+  document.addEventListener("DOMContentLoaded", () => { renderMap(); renderShop(); renderEquipped(); renderAvatarChip(); });
 })();
