@@ -90,3 +90,16 @@
 .challenge-card .challenge-answer{font-size:clamp(12px,2.2vw,16px);overflow-wrap:anywhere;min-width:0;padding:10px 7px}
 .challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 @media(max-width:480px){.challenge-card .quiz-topline{gap:7px}.challenge-card .challenge-visuals{margin:16px 0}.challenge-number-line{padding:16px 10px 7px}.challenge-card .answer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Compact mobile header: keep branding and controls inside the viewport. */
+@media(max-width:480px){
+  html,body{max-width:100%;overflow-x:clip}
+  .topbar{width:100%;min-width:0;max-width:100%;padding:10px 12px;gap:8px;justify-content:space-between}
+  .brand{flex:0 0 auto;min-width:0;gap:0;font-size:0;letter-spacing:0}
+  .brand>span:not(.brand-mark){display:none}
+  .brand-mark{width:32px;height:32px;flex:0 0 32px;font-size:22px}
+  .topbar-right{flex:1;min-width:0;justify-content:flex-end;gap:6px}
+  .streak-pill{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:0;padding:7px 9px;white-space:nowrap;font-size:11px}
+  .streak-pill [aria-hidden="true"]{font-size:12px}
+  .icon-button{flex:0 0 34px;width:34px;height:34px}
+}
