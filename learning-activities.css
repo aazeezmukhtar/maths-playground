@@ -1,0 +1,49 @@
+/* Written lessons and reusable activity engine */
+.learning-content-library{max-width:1124px;margin:0 auto 32px}
+.activity-library-heading{margin:0 0 17px}
+.activity-library-heading .eyebrow{margin:0 0 7px}
+.activity-library-heading h2{font:900 clamp(23px,3vw,30px)/1.15 'Nunito',sans-serif;letter-spacing:-.7px;color:var(--ink);margin:0 0 8px}
+.activity-library-intro{font-size:13px;line-height:1.65;color:var(--muted);margin:0;max-width:760px}
+.written-lessons,.reusable-activities{margin:0 0 34px}
+.written-lesson{padding:23px;margin:0 0 13px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 10px 30px rgba(0,28,44,.035)}
+.written-lesson-step,.activity-kind{margin:0 0 8px;color:#8B6800;font-size:10px;letter-spacing:.8px;font-weight:900}
+.written-lesson h3,.reusable-activity-card h3{font:900 21px/1.2 'Nunito',sans-serif;letter-spacing:-.4px;color:var(--ink);margin:0 0 10px}
+.written-lesson-intro{font-size:14px;line-height:1.7;color:#334B57;margin:0 0 18px}
+.written-lesson-block{margin:16px 0 0}
+.written-lesson-block h4{font:900 15px 'Nunito',sans-serif;color:var(--ink);margin:0 0 7px}
+.written-lesson-block p{font-size:13px;line-height:1.75;color:var(--muted);margin:0 0 8px}
+.written-lesson-key{display:flex;align-items:flex-start;gap:10px;margin:19px 0 0;padding:13px;border-radius:13px;background:#FFF3CC}
+.written-lesson-key span{font-size:19px}
+.written-lesson-key p{margin:1px 0 0;color:#513F00;font-size:12px;line-height:1.6;font-weight:800}
+.reusable-activity-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.reusable-activity-card{min-width:0;padding:20px;border:1px solid var(--line);border-radius:20px;background:#fff;box-shadow:0 10px 30px rgba(0,28,44,.035)}
+.reusable-activity-card h3{font-size:19px;margin-bottom:8px}
+.activity-instructions{font-size:12px;line-height:1.6;color:var(--muted);margin:0 0 12px}
+.activity-saved-result{font-size:11px;color:var(--muted);margin:0 0 15px}
+.activity-saved-result.has-saved-result{color:#176448;font-weight:900}
+.reusable-activity-panel{border-top:1px solid var(--line);padding-top:14px}
+.reusable-counter{font-size:10px;letter-spacing:.7px;font-weight:900;color:#667983;margin:0 0 9px}
+.reusable-question{font:800 15px/1.5 'Nunito',sans-serif;color:var(--ink);margin:0 0 13px}
+.reusable-options{display:grid;gap:8px}
+.reusable-option,.matching-choice{min-width:0;border:1px solid #D8E0E4;border-radius:12px;background:#fff;color:var(--ink);padding:11px 12px;font:700 12px/1.45 'DM Sans',sans-serif;text-align:left;cursor:pointer}
+.reusable-option:hover,.matching-choice:hover{border-color:#8096A0;background:#F7F9FA}
+.reusable-option.is-selected,.matching-choice.is-selected{border-color:#001C2C;background:#EAF0F3;box-shadow:inset 0 0 0 1px #001C2C}
+.reusable-option.is-answer,.matching-choice.is-matched{border-color:#2B8B65;background:#E4F5ED;color:#176448}
+.reusable-option.is-wrong{border-color:#C45C55;background:#FCEDEC;color:#8A2925}
+.reusable-option:disabled,.matching-choice:disabled{cursor:default;opacity:1}
+.reusable-feedback{font-size:12px;line-height:1.65;padding:10px 11px;border-radius:11px;margin:12px 0;color:#53636C;background:#F0F2F3}
+.reusable-feedback:empty{display:none}
+.reusable-feedback.is-correct{color:#176448;background:#E4F5ED}
+.reusable-feedback.is-try-again{color:#8A2925;background:#FCEDEC}
+.reusable-feedback.is-hint{color:#684D00;background:#FFF3CC}
+.activity-primary-button,.activity-secondary-button{margin:10px 7px 0 0;border:0;border-radius:22px;padding:11px 14px;font-size:11px;font-weight:900;cursor:pointer}
+.activity-primary-button{background:#001C2C;color:#fff}
+.activity-primary-button:hover{background:#163D50}
+.activity-primary-button:disabled{opacity:.45;cursor:not-allowed}
+.activity-secondary-button{background:#EAF0F3;color:#001C2C}
+.matching-prompt{font-size:12px;line-height:1.6;color:var(--muted);margin:0 0 12px}
+.matching-board{display:grid;grid-template-columns:1fr 1.2fr;gap:9px}
+.matching-column{display:grid;align-content:start;gap:8px;min-width:0}
+.matching-column h4{font:900 12px 'Nunito',sans-serif;margin:0 0 2px}
+.matching-choice{height:100%;min-height:48px}
+@media(max-width:760px){.learning-content-library{margin:0 16px 28px}.written-lesson{padding:17px;border-radius:17px}.written-lesson h3{font-size:19px}.written-lesson-intro{font-size:13px}.written-lesson-block p{font-size:12px}.reusable-activity-grid{grid-template-columns:1fr;gap:12px}.reusable-activity-card{padding:16px;border-radius:17px}.matching-board{grid-template-columns:1fr 1fr;gap:7px}.matching-choice{font-size:11px;padding:9px 8px;overflow-wrap:anywhere}}
