@@ -32,14 +32,17 @@ const challengeQuestions = [
   { type:'compare', prompt:'Which fraction is larger?', fractions:[{n:2,d:5},{n:4,d:5}], choices:['2/5','4/5'], correct:'4/5', hint:'Both fractions have fifths. Compare the top numbers.', explain:'4/5 is larger than 2/5 because four fifths is more than two fifths.' }
 ];
 
+function getProgressStorageKey() {
+  return window.LearnerProfiles ? window.LearnerProfiles.storageKey(STORAGE_KEY) : STORAGE_KEY;
+}
 function loadProgress() {
   try {
-    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    const saved = JSON.parse(localStorage.getItem(getProgressStorageKey()) || '{}');
     return { ...defaultProgress, ...saved };
   } catch { return { ...defaultProgress }; }
 }
 function saveProgress() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(progress)); } catch { /* Storage may be disabled. */ }
+  try { localStorage.setItem(getProgressStorageKey(), JSON.stringify(progress)); } catch { /* Storage may be disabled. */ }
   renderProgress();
 }
 function renderProgress() {
