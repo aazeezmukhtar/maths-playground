@@ -8,6 +8,9 @@ let practiceIndex = 0;
 let practiceAnswered = false;
 let challengeIndex = 0;
 let challengeAnswered = false;
+let activeChallengeLevelId = 'fraction-1';
+let challengeRunAnswered = 0;
+let challengeRunCorrect = 0;
 let selectedSlices = new Set();
 let soundEnabled = false;
 let audioContext;
@@ -224,8 +227,14 @@ function makeChallengeFractionCard(f) {
   card.append(bar, label);
   return card;
 }
+function activeChallengeIndexes() {
+  const level = window.PlaygroundGamification && window.PlaygroundGamification.getLevel(activeChallengeLevelId);
+  return level ? level.questionIndexes : challengeQuestions.map((_, index) => index);
+}
 function renderChallenge() {
-  const q = challengeQuestions[challengeIndex % challengeQuestions.length];
+  const indexes = activeChallengeIndexes();
+  const questionIndex = indexes[challengeIndex % indexes.length];
+  const q = challengeQuestions[questionIndex];
   challengeAnswered = false;
   $('#challenge-question').textContent = q.prompt;
   const visuals = $('#challenge-visuals');
@@ -276,12 +285,21 @@ function renderChallenge() {
   $('#challenge-hint').disabled = false;
   $('#challenge-answers').setAttribute('aria-label', 'Choose your answer');
   const counter = $('#challenge-counter');
-  if (counter) counter.textContent = `QUESTION ${challengeIndex % challengeQuestions.length + 1} OF ${challengeQuestions.length}`;
+  if (counter) counter.textContent = `QUESTION ${challengeIndex % indexes.length + 1} OF ${indexes.length}`;
+  const level = window.PlaygroundGamification && window.PlaygroundGamification.getLevel(activeChallengeLevelId);
+  const badge = $('.challenge-badge');
+  if (badge) badge.textContent = level ? `⭐ LEVEL ${level.number}` : '⭐ CHALLENGE';
+  const title = $('#challenge-level-title');
+  if (title) title.textContent = level ? `${level.title} · ${level.subtitle}` : 'Challenge time';
+  const next = $('#challenge-next');
+  if (next) next.textContent = challengeIndex % indexes.length === indexes.length - 1 ? 'Finish level →' : 'Next challenge →';
 }
 function answerChallenge(answer, clicked) {
   if (challengeAnswered) return;
   challengeAnswered = true;
-  const q = challengeQuestions[challengeIndex % challengeQuestions.length];
+  const indexes = activeChallengeIndexes();
+  const questionIndex = indexes[challengeIndex % indexes.length];
+  const q = challengeQuestions[questionIndex];
   const correct = answer === q.correct;
   $$('.answer-button', $('#challenge-answers')).forEach(button => {
     button.disabled = true;
@@ -295,8 +313,23 @@ function answerChallenge(answer, clicked) {
   $('#challenge-next').disabled = false;
   $('#challenge-hint').disabled = true;
   progress.challengeAnswered++;
-  if (correct) { progress.points += 20; progress.challengeCorrect++; }
+  challengeRunAnswered++;
+  if (correct) {
+    progress.challengeCorrect++;
+    challengeRunCorrect++;
+    const rewardKey = 'fraction-challenge-question-' + questionIndex;
+    const firstReward = window.PlaygroundGamification ? window.PlaygroundGamification.awardQuestion(rewardKey, 20, 5) : true;
+    if (firstReward) progress.points += 20;
+  }
   saveProgress(); playTone(correct);
+  if (challengeRunAnswered >= indexes.length) {
+    const percent = Math.round((challengeRunCorrect / indexes.length) * 100);
+    const result = window.PlaygroundGamification ? window.PlaygroundGamification.recordLevel(activeChallengeLevelId, percent) : { stars: percent >= 100 ? 3 : percent >= 80 ? 2 : percent >= 60 ? 1 : 0, coinsAwarded: 0 };
+    const stars = result.bestStars || result.stars || 0;
+    feedback.textContent += ` Level finished: ${percent}% · ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}. ${result.coinsAwarded ? `You earned ${result.coinsAwarded} coins! ` : ''}${stars ? 'Great work! Check the adventure map for your next level.' : 'Try again to earn your first star and unlock the next level.'}`;
+    const nextButton = $('#challenge-next');
+    if (nextButton) nextButton.textContent = 'Back to adventure map';
+  }
 }
 function bindHint(buttonId, messageId, getHint) {
   $(buttonId).addEventListener('click', () => {
@@ -319,10 +352,17 @@ if ($('#fraction-workspace')) {
  $('#practice-check-shading').addEventListener('click',checkShadePractice);
  const shadeScale=$('#shade-denominator-control');if(shadeScale)shadeScale.addEventListener('input',()=>{shadeDenominator=Number(shadeScale.value);shadeSelection.clear();$('#shade-denominator-value').textContent=String(shadeDenominator);$('#practice-game-feedback').hidden=true;$('#practice-check-shading').disabled=false;renderShadePieces();});
  $('#practice-game-hint').addEventListener('click',()=>{const q=practiceActivities[activePracticeMode].questions[activePracticeQuestion%practiceActivities[activePracticeMode].questions.length];const box=$('#practice-game-hint-message');box.textContent=q.hint;box.hidden=false;});
- $('#challenge-next').addEventListener('click',()=>{challengeIndex++;renderChallenge();});
+ $('#challenge-next').addEventListener('click',()=>{
+   const indexes = activeChallengeIndexes();
+   if (challengeRunAnswered >= indexes.length) { challengeRunAnswered=0; challengeRunCorrect=0; challengeIndex=0; renderChallenge(); if(window.PlaygroundGamification)window.PlaygroundGamification.renderMap(); const map=$('#challenge-map'); if(map)map.scrollIntoView({behavior:'smooth',block:'start'}); return; }
+   challengeIndex++;renderChallenge();
+ });
  renderPracticeMenu();
- bindHint('#challenge-hint','#challenge-hint-message',()=>challengeQuestions[challengeIndex%challengeQuestions.length].hint);
- $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset this learner’s points, question totals, and completed lesson activities? This cannot be undone.'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;activePracticeMode=null;try{const activityKey=window.LearnerProfiles?window.LearnerProfiles.storageKey('maths-playground-learning-activities-v1'):'maths-playground-learning-activities-v1';localStorage.setItem(activityKey,'{}');}catch{}saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
+ bindHint('#challenge-hint','#challenge-hint-message',()=>{const indexes=activeChallengeIndexes();return challengeQuestions[indexes[challengeIndex%indexes.length]].hint;});
+ document.addEventListener('challengelevelselected',event=>{activeChallengeLevelId=event.detail.levelId;challengeIndex=0;challengeRunAnswered=0;challengeRunCorrect=0;renderChallenge();});
+ const requestedLevel=new URLSearchParams(location.search).get('level');
+ if(requestedLevel&&window.PlaygroundGamification&&window.PlaygroundGamification.isUnlocked(window.PlaygroundGamification.getLevel(requestedLevel))){activeChallengeLevelId=requestedLevel;switchPanel('challenge');}
+ $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset this learner’s points, question totals, challenge stars, coins, purchases, and completed lesson activities? This cannot be undone. Export a backup first if you may want to keep this progress.'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;challengeRunAnswered=0;challengeRunCorrect=0;activePracticeMode=null;try{const activityKey=window.LearnerProfiles?window.LearnerProfiles.storageKey('maths-playground-learning-activities-v1'):'maths-playground-learning-activities-v1';localStorage.setItem(activityKey,'{}');}catch{}if(window.PlaygroundGamification)window.PlaygroundGamification.resetForCurrentLearner();saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});
  renderPizza();renderPracticeMenu();renderChallenge();
 }
 document.addEventListener('learningprogresschange',()=>{progress=loadProgress();renderProgress();});
