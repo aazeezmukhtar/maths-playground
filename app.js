@@ -359,7 +359,7 @@ if ($('#fraction-workspace')) {
  });
  renderPracticeMenu();
  bindHint('#challenge-hint','#challenge-hint-message',()=>{const indexes=activeChallengeIndexes();return challengeQuestions[indexes[challengeIndex%indexes.length]].hint;});
- document.addEventListener('challengelevelselected',event=>{activeChallengeLevelId=event.detail.levelId;challengeIndex=0;challengeRunAnswered=0;challengeRunCorrect=0;renderChallenge();});
+ document.addEventListener('challengelevelselected',event=>{activeChallengeLevelId=event.detail.levelId;challengeIndex=0;challengeRunAnswered=0;challengeRunCorrect=0;switchPanel('challenge');renderChallenge();});
  const requestedLevel=new URLSearchParams(location.search).get('level');
  if(requestedLevel&&window.PlaygroundGamification&&window.PlaygroundGamification.isUnlocked(window.PlaygroundGamification.getLevel(requestedLevel))){activeChallengeLevelId=requestedLevel;switchPanel('challenge');}
  $('#reset-progress').addEventListener('click',()=>{if(!window.confirm('Reset this learner’s points, question totals, challenge stars, coins, purchases, and completed lesson activities? This cannot be undone. Export a backup first if you may want to keep this progress.'))return;progress={...defaultProgress};practiceIndex=0;challengeIndex=0;challengeRunAnswered=0;challengeRunCorrect=0;activePracticeMode=null;try{const activityKey=window.LearnerProfiles?window.LearnerProfiles.storageKey('maths-playground-learning-activities-v1'):'maths-playground-learning-activities-v1';localStorage.setItem(activityKey,'{}');}catch{}if(window.PlaygroundGamification)window.PlaygroundGamification.resetForCurrentLearner();saveProgress();renderPracticeMenu();renderChallenge();showToast('Progress reset. A fresh start! 🌱');});

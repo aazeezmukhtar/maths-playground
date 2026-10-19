@@ -10,12 +10,14 @@
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A7%A9%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
   <link rel="stylesheet" href="./gamification.css">
+  <link rel="stylesheet" href="./kid-navigation.css">
   <link rel="stylesheet" href="./catalog.css">
   <script src="./data/learning-catalog.js" defer></script>
   <script src="./catalog.js" defer></script>
   <script src="./learner-profiles.js" defer></script>
   <script src="./data/gamification.js" defer></script>
   <script src="./gamification.js" defer></script>
+  <script src="./kid-navigation.js" defer></script>
   <script src="./app.js" defer></script>
   <script src="./progress-dashboard.js" defer></script>
   <link rel="stylesheet" href="./learner-profiles.css">
@@ -32,24 +34,26 @@
         <p class="eyebrow"><span class="eyebrow-dot"></span> LEARN · PLAY · GROW</p>
         <h1 id="welcome-title">Big ideas.<br><span>Little steps.</span></h1>
         <p>Explore, experiment, and discover something new. Choose an adventure and learn at your own pace.</p>
-        <a class="primary-button hero-button" href="./modules/fractions/">Start learning <span aria-hidden="true">→</span></a>
+        <a class="primary-button hero-button" href="./modules/fractions/?level=fraction-1">🎮 Play a game <span aria-hidden="true">→</span></a>
       </div>
       <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="floating-shape shape-circle">½</div><div class="floating-shape shape-star">✦</div><div class="fraction-pie"><span></span><span></span><span></span><span></span></div><div class="floating-shape shape-square">+</div><div class="floating-shape shape-triangle">÷</div><div class="hero-spark spark-one">✧</div><div class="hero-spark spark-two">✦</div></div>
       <div class="hero-bottom"><span>🧠</span> Learn at your own pace <span class="hero-bottom-dot">•</span> No pressure, just progress!</div>
     </section>
+    <section class="kid-quick-start" aria-label="Choose what to do"><a class="kid-action-card kid-play" href="./modules/fractions/?level=fraction-1"><span class="kid-action-emoji">🎮</span><span><strong>Play a game</strong><small>Start with a fun challenge</small></span><b aria-hidden="true">→</b></a><a class="kid-action-card kid-learn" href="./modules/fractions/"><span class="kid-action-emoji">🍕</span><span><strong>Learn with pictures</strong><small>Explore fractions step by step</small></span><b aria-hidden="true">→</b></a><a class="kid-action-card kid-rewards" href="#rewards-shop"><span class="kid-action-emoji">🎁</span><span><strong>My rewards</strong><small>See coins and fun items</small></span><b aria-hidden="true">→</b></a></section>
+    <details class="parent-progress"><summary>🌟 See my progress and badges</summary>
     <section class="dashboard-summary" aria-label="Your learning progress">
       <div><span class="summary-icon">🌟</span><div><strong id="dashboard-points">0</strong><span>Total XP earned</span></div></div>
       <div><span class="summary-icon">🎯</span><div><strong id="dashboard-practice">0</strong><span>Practice questions tried</span></div></div>
       <div><span class="summary-icon">🏆</span><div><strong id="dashboard-challenges">0</strong><span>Challenges attempted</span></div></div>
     </section>
-    <section class="gamification-panel" aria-labelledby="adventure-section-title"><div class="section-heading"><div><p class="eyebrow">YOUR NEXT ADVENTURE</p><h2 id="adventure-section-title">Challenge map</h2></div></div><div id="challenge-map"></div><p class="gamification-note">Earn at least one star to open the next level. XP is your lifetime learning progress; coins are for shop items.</p></section>
-    <section class="gamification-panel" aria-labelledby="shop-section-title"><div class="section-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="shop-section-title">Personalise your profile</h2></div></div><div id="equipped-rewards"></div><div id="rewards-shop"></div></section>
+    </details>
+    <section class="gamification-panel kid-adventure-panel" aria-labelledby="adventure-section-title"><div class="section-heading"><div><p class="eyebrow">YOUR NEXT ADVENTURE</p><h2 id="adventure-section-title">Challenge map</h2></div></div><div id="challenge-map"></div><p class="gamification-note">Earn at least one star to open the next level. XP is your lifetime learning progress; coins are for shop items.</p></section>
+    <section class="gamification-panel kid-rewards-panel" id="my-rewards" aria-labelledby="shop-section-title"><div class="section-heading"><div><p class="eyebrow">MAKE IT YOURS</p><h2 id="shop-section-title">Personalise your profile</h2></div></div><div id="equipped-rewards"></div><div id="rewards-shop"></div></section>
     <section class="learning-achievements" aria-labelledby="achievements-title">
       <div class="achievements-heading"><p class="eyebrow">YOUR LITTLE WINS</p><h2 id="achievements-title">Progress and achievements</h2><p id="progress-summary" aria-live="polite">Every question you try is a step forward.</p></div>
       <div class="achievement-grid" id="achievement-grid" aria-label="Learning achievements"></div>
     </section>
-    <section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">Choose a subject</h2></div><a class="coming-label" href="./subjects/">Explore all subjects <span aria-hidden="true">→</span></a></section>
-    <section class="catalog-grid home-catalog-grid" data-catalog-view="subjects" aria-label="Learning subjects"></section>
+    <details class="more-subjects"><summary>🌈 Explore more subjects</summary><section class="section-heading" aria-labelledby="path-title"><div><p class="eyebrow">PICK YOUR PATH</p><h2 id="path-title">Choose a subject</h2></div><a class="coming-label" href="./subjects/">Explore all subjects <span aria-hidden="true">→</span></a></section><section class="catalog-grid home-catalog-grid" data-catalog-view="subjects" aria-label="Learning subjects"></section></details>
     <section class="encouragement-strip"><div class="encourage-icon">🌈</div><div><h3>Every expert was once a beginner.</h3><p>Take your time, try things out, and celebrate every little win.</p></div><span class="encourage-spark" aria-hidden="true">✦</span></section>
   </main>
   <footer class="site-footer"><a class="footer-brand" href="./">✳ Al-Jaleel Academy</a><span>Igniting a Brighter Future</span><span>Learn · Play · Grow</span></footer>
