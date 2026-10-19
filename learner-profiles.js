@@ -283,20 +283,12 @@
     });
     input.click();
   };
-  const mountManageShortcut = () => {
-    document.querySelectorAll(".topbar-right").forEach(right => {
-      if (right.querySelector(".learner-manage-shortcut")) return;
-      const b = makeButton("Profiles", "learner-manage-shortcut", () => { showOverlay(); renderManageProfiles(); });
-      b.setAttribute("aria-label", "Manage learner profiles"); right.append(b);
-    });
-  };
   const boot = () => {
     if (!document.body) return;
     showOverlay();
     const profiles = readProfiles(), id = activeId();
     if (id && profiles.some(p => p.id === id)) { currentProfile = profileById(id); hideOverlay(); dispatchProfileChange(); }
     else { try { sessionStorage.removeItem(ACTIVE_KEY); } catch {} renderChooser(); }
-    mountManageShortcut();
     window.LearnerProfiles = {
       getActiveProfile: () => currentProfile ? { id: currentProfile.id, name: currentProfile.name } : null,
       storageKey: profileStorageKey,
