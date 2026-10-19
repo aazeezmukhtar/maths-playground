@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maths-playground-v18';
+const CACHE_NAME = 'maths-playground-v19';
 const APP_SHELL = [
   './',
   './index.html',
