@@ -8,6 +8,7 @@
   if (!content) return;
 
   const STORAGE_KEY = "maths-playground-learning-activities-v1";
+  const storageKey = () => window.LearnerProfiles ? window.LearnerProfiles.storageKey(STORAGE_KEY) : STORAGE_KEY;
   const make = (tag, className, text) => {
     const node = document.createElement(tag);
     if (className) node.className = className;
@@ -22,14 +23,14 @@
   };
   const readProgress = () => {
     try {
-      const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const all = JSON.parse(localStorage.getItem(storageKey()) || "{}");
       return all[moduleId] || {};
     } catch { return {}; }
   };
   const awardPoints = points => {
     if (!Number.isFinite(points) || points <= 0) return;
     try {
-      const key = "maths-playground-progress-v1";
+      const key = window.LearnerProfiles ? window.LearnerProfiles.storageKey("maths-playground-progress-v1") : "maths-playground-progress-v1";
       const progress = JSON.parse(localStorage.getItem(key) || "{}");
       progress.points = Math.max(0, Number(progress.points) || 0) + points;
       localStorage.setItem(key, JSON.stringify({
@@ -44,7 +45,7 @@
       const moduleProgress = all[moduleId] || {};
       moduleProgress[activityId] = result;
       all[moduleId] = moduleProgress;
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
+      localStorage.setItem(storageKey(), JSON.stringify(all));
     } catch { /* Activities still work when storage is unavailable. */ }
     renderSummary();
   };
