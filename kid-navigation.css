@@ -1,0 +1,6 @@
+/* Kid-friendly navigation enhancements */
+.kid-quick-start{isolation:isolate}
+.kid-action-card:focus-visible,.kid-big-button:focus-visible{outline:4px solid #001c2c;outline-offset:3px}
+.kid-action-card:active,.kid-big-button:active{transform:translateY(1px)}
+.kid-adventure-panel .gamification-note{font-weight:700;color:#51431b}
+@media(prefers-reduced-motion:reduce){.kid-action-card,.kid-big-button{transition:none}html{scroll-behavior:auto}}
