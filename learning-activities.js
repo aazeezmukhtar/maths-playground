@@ -41,7 +41,7 @@
   };
   const saveResult = (activityId, result) => {
     try {
-      const all = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+      const all = JSON.parse(localStorage.getItem(storageKey()) || "{}");
       const moduleProgress = all[moduleId] || {};
       moduleProgress[activityId] = result;
       all[moduleId] = moduleProgress;
