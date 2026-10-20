@@ -166,3 +166,14 @@
 .age-path-card strong{font:900 16px/1.25 'Nunito',sans-serif}.age-path-card small{font-size:12px;line-height:1.4;color:#4e5964}.age-path-card .age-emoji{font-size:30px}.age-path-card:focus-visible{outline:4px solid #001c2c;outline-offset:3px}
 .age-path-early{background:#e2f7ec;border-color:#a8e8c7}.age-path-primary{background:#fff0c8;border-color:#f4d77d}.age-path-explorer{background:#e5e8ff;border-color:#bfc5ff}
 @media(max-width:700px){.age-path-picker{margin:0 12px 22px;padding:16px}.age-path-options{grid-template-columns:1fr}.age-path-card{min-height:90px;display:grid;grid-template-columns:44px 1fr;align-items:center;column-gap:12px;padding:13px}.age-path-card .age-emoji{grid-row:span 2}.age-path-card strong,.age-path-card small{grid-column:2}}
+
+/* Age-appropriate activity guidance within each learning module */
+.module-age-switch{max-width:1124px;margin:0 auto 14px;padding:16px 20px;background:#fff;border:1px solid var(--line);border-radius:20px}
+.module-age-switch>p:first-child{margin:0 0 10px;font:900 14px 'Nunito',sans-serif;color:var(--ink)}
+.module-age-switch [role="group"]{display:flex;flex-wrap:wrap;gap:8px}
+.module-age-switch button{min-height:42px;padding:9px 13px;border:2px solid var(--line);border-radius:13px;background:#fff;font-size:12px;font-weight:800;color:var(--ink)}
+.module-age-switch button[aria-pressed="true"]{border-color:var(--school-blue);background:#fff2c7;box-shadow:inset 0 0 0 1px var(--school-blue)}
+.module-age-switch button:focus-visible{outline:3px solid var(--school-blue);outline-offset:2px}
+.module-age-hint{margin:10px 0 0;color:var(--muted);font-size:12px;line-height:1.5}
+.fraction-activity-card[hidden]{display:none!important}
+@media(max-width:700px){.module-age-switch{margin:0 12px 12px;padding:14px}.module-age-switch [role="group"]{display:grid;grid-template-columns:1fr}.module-age-switch button{text-align:left;min-height:46px}}
