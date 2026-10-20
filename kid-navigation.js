@@ -30,6 +30,30 @@
         }
       } catch (_) {}
     }
+    const ageButtons = [...document.querySelectorAll("[data-module-age]")];
+    const ageHint = document.querySelector("[data-module-age-hint]");
+    const activityCards = [...document.querySelectorAll("[data-fraction-activity]")];
+    const ageSettings = {
+      early: { hint: "Start with pictures and simple steps. Try Learn with pizza or Shade the shape.", hidden: ["compare", "detective", "adventure"], first: "learn" },
+      primary: { hint: "Practise what you know with matching, shading, and comparing fractions.", hidden: ["detective"], first: "shade" },
+      explorer: { hint: "Ready for a challenge? Try every activity and earn adventure stars.", hidden: [], first: "adventure" }
+    };
+    const setModuleAge = (path, launch = false) => {
+      const settings = ageSettings[path] || ageSettings.primary;
+      document.documentElement.dataset.agePath = path;
+      ageButtons.forEach(button => button.setAttribute("aria-pressed", String(button.dataset.moduleAge === path)));
+      activityCards.forEach(card => {
+        const hidden = settings.hidden.includes(card.dataset.fractionActivity);
+        card.hidden = hidden;
+      });
+      if (ageHint) ageHint.textContent = settings.hint;
+      try { localStorage.setItem("maths-playground-age-path-v1", path); } catch (_) {}
+      if (launch) document.querySelector('[data-fraction-activity="' + settings.first + '"]')?.click();
+    };
+    ageButtons.forEach(button => button.addEventListener("click", () => setModuleAge(button.dataset.moduleAge)));
+    let savedAgePath = "primary";
+    try { savedAgePath = localStorage.getItem("maths-playground-age-path-v1") || "primary"; } catch (_) {}
+    setModuleAge(savedAgePath);
     document.querySelectorAll("[data-fraction-activity]").forEach(button => {
       button.addEventListener("click", () => {
         const action = button.dataset.fractionActivity;
