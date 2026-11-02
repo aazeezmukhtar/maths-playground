@@ -199,3 +199,11 @@
 .operation-level-list{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}.operation-level-list button{padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:#fff;font-size:11px;font-weight:800}.operation-level-list button[aria-pressed=true]{background:#eaf0f3;border-color:var(--school-blue)}
 .operation-summary{margin-top:18px;padding:18px;border-radius:17px;background:#eaf0f3;text-align:center}.operation-summary[hidden]{display:none}.operation-summary strong{display:block;font:900 22px 'Nunito',sans-serif}.operation-stars{font-size:27px;letter-spacing:4px;color:#B88600}
 @media(max-width:680px){.operations-main{padding:0 14px}.operations-picker{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.operation-choice{min-height:112px;padding:13px}.operation-workspace{padding:17px;border-radius:19px}.operation-answer-row input{width:125px}}
+
+/* Accessibility utility and balanced, subject-first home page. */
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.hero-learning-symbol{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:140px;height:140px;display:grid;place-items:center;border:8px solid #fff;border-radius:38px;background:linear-gradient(135deg,#FBBA00 0 33%,#70d9ba 33% 66%,#ff9eaf 66%);color:#001C2C;font:900 78px 'Nunito',sans-serif;box-shadow:0 15px 24px #001c2c20}
+.home-subjects{max-width:1124px;margin:0 auto 42px;padding:0 2px}
+.home-catalog-grid{margin-top:0}
+@media(max-width:1190px){.home-subjects{margin-left:28px;margin-right:28px}}
+@media(max-width:700px){.home-subjects{margin:0 16px 34px;padding:0}.home-subjects .section-heading{align-items:center}.home-subjects .section-heading h2{font-size:24px}}
