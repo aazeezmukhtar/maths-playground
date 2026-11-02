@@ -5,3 +5,14 @@
 .lesson-note{margin:16px 0;padding:14px 16px;border-left:4px solid var(--school-gold);background:#fff8e4;border-radius:0 12px 12px 0;font-size:13px;line-height:1.6;color:#594500}
 .operation-workspace[hidden],.lesson-panel[hidden]{display:none!important}
 @media(max-width:600px){.lesson-panel{padding:18px;border-radius:18px}.lesson-content{font-size:15px}}
+
+.lesson-demo{margin:18px 0;padding:18px;border:2px solid #dce7ed;border-radius:18px;background:#f4f8fa}
+.lesson-demo h3{font:900 18px 'Nunito',sans-serif;margin:0 0 8px;color:var(--ink)}
+.lesson-demo p{font-size:14px;line-height:1.65;color:var(--muted)}
+.demo-visual{min-height:82px;margin:14px 0;padding:18px 10px;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;background:#fff;border-radius:14px;color:var(--school-blue);font:900 clamp(23px,5vw,34px) 'Nunito',sans-serif;text-align:center;overflow-wrap:anywhere}
+.demo-blocks{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+.demo-blocks b{display:inline-block;padding:12px 16px;border-radius:12px;background:#fff0bd;border:2px solid var(--school-gold);font-size:18px}
+.demo-status{min-height:24px;margin:8px 0 12px!important;font-weight:800}
+.lesson-start{width:100%;margin-top:8px}
+.lesson-demo button:disabled{opacity:.65}
+@media(max-width:600px){.lesson-demo{padding:14px}.demo-blocks b{font-size:16px;padding:10px}}
