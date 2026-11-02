@@ -8,6 +8,8 @@ const APP_SHELL = [
   './modules/numbers/index.html',
   './number-operations.js',
   './number-operations.css',
+  './number-operations.js',
+  './number-operations.css',
   './modules/geometry/',
   './modules/geometry/index.html',
   './modules/challenges/',
