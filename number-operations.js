@@ -15,8 +15,8 @@ function question(){const [,,op,kind]=modes[mode];let a,b;
 if(kind==="easy"){a=rand(1,10);b=rand(1,10);if(op==="−"&&b>a)[a,b]=[b,a];}
 else if(kind==="plain"&&op==="+"){let t=rand(1,7),u=rand(0,8);a=t*10+u;b=rand(1,Math.min(8,9-t))*10+rand(0,Math.min(8,9-u));}
 else if(kind==="plain"){a=rand(40,99);b=rand(10,Math.min(39,a-1));if(a%10<b%10)b=Math.floor(b/10)*10+Math.max(0,a%10-1);}
-else if(kind==="carry"){a=rand(12,79);let ones=rand(10-a%10,18-a%10);b=rand(11,Math.min(89,99-a));b=Math.floor(b/10)*10+ones;if(a+b>99)b=99-a;if(a%10+b%10<10)b+=10;if(a+b>99)b=99-a;}
-else {a=rand(31,99);b=rand(11,a-1);if(a%10>=b%10){b=Math.floor(b/10)*10+Math.min(9,a%10+1);if(b>=a)b=a-1;}if(a%10>=b%10)a=Math.floor(a/10)*10+Math.max(0,a%10-1);}
+else if(kind==="carry"){a=rand(11,69);let ones=rand(10-a%10,9);let maxTens=Math.floor((99-a-ones)/10);let tens=rand(1,Math.max(1,maxTens));b=tens*10+ones;}
+else {a=rand(31,99);let ones=rand(a%10+1,9);let maxTens=Math.floor((a-1-ones)/10);let tens=rand(1,Math.max(1,maxTens));b=tens*10+ones;}
 const ans=op==="+"?a+b:a-b,onesA=a%10,onesB=b%10;
 let steps=kind==="carry"?"Ones: "+onesA+" + "+onesB+" = "+(onesA+onesB)+". Exchange 10 ones for 1 ten. Then add the tens, including the carried ten. Answer: "+ans+".":kind==="borrow"?"We have "+onesA+" ones but need to take away "+onesB+". Exchange 1 ten for 10 ones: "+(onesA+10)+" − "+onesB+" = "+(onesA+10-onesB)+" ones. Then subtract the tens. Answer: "+ans+".":a+" "+op+" "+b+" = "+ans+".";
 return{a,b,ans,steps};}
