@@ -8,6 +8,7 @@
   const LEGACY_ACTIVITIES = "maths-playground-learning-activities-v1";
   const GAMIFICATION_KEY = "maths-playground-gamification-v1";
   const OPERATIONS_KEY = "maths-playground-number-operations-v1";
+  const OPERATIONS_KEY = "maths-playground-number-operations-v1";
   const nativeGet = key => localStorage.getItem(key);
   const nativeSet = (key, value) => localStorage.setItem(key, value);
   const nativeRemove = key => localStorage.removeItem(key);
@@ -24,6 +25,7 @@
     if (key === LEGACY_PROGRESS) return "maths-playground-profile-" + id + "-progress-v1";
     if (key === LEGACY_ACTIVITIES) return "maths-playground-profile-" + id + "-learning-activities-v1";
     if (key === GAMIFICATION_KEY) return "maths-playground-profile-" + id + "-gamification-v1";
+    if (key === OPERATIONS_KEY) return "maths-playground-profile-" + id + "-number-operations-v1";
     if (key === OPERATIONS_KEY) return "maths-playground-profile-" + id + "-number-operations-v1";
     return key;
   };
@@ -248,6 +250,7 @@
       nativeRemove("maths-playground-profile-" + profile.id + "-progress-v1");
       nativeRemove("maths-playground-profile-" + profile.id + "-learning-activities-v1");
       nativeRemove("maths-playground-profile-" + profile.id + "-gamification-v1");
+      nativeRemove("maths-playground-profile-" + profile.id + "-number-operations-v1");
       nativeRemove("maths-playground-profile-" + profile.id + "-number-operations-v1");
       if (activeId() === profile.id) { try { sessionStorage.removeItem(ACTIVE_KEY); } catch {} currentProfile = null; }
       renderManageProfiles();
