@@ -1,4 +1,4 @@
-const CACHE_NAME = 'maths-playground-v20';
+const CACHE_NAME = 'maths-playground-v21';
 const APP_SHELL = [
   './',
   './index.html',
@@ -6,6 +6,10 @@ const APP_SHELL = [
   './modules/fractions/index.html',
   './modules/numbers/',
   './modules/numbers/index.html',
+  './number-operations.js',
+  './number-operations.css',
+  './number-operations.js',
+  './number-operations.css',
   './modules/geometry/',
   './modules/geometry/index.html',
   './modules/challenges/',

@@ -14,7 +14,7 @@ window.LEARNING_CATALOG = {
       ages: "4–12", status: "available", route: "subjects/mathematics/",
       modules: [
         { id: "fractions", title: "Fraction Fun", description: "Slice it, share it, shade it, and compare fractions with visual models.", ages: "7–12", status: "available", route: "modules/fractions/", curriculumTags: ["Number", "Fractions"] },
-        { id: "numbers", title: "Number Explorers", description: "Count, calculate, and discover clever ways to solve problems.", ages: "5–12", status: "coming-soon", route: "modules/numbers/", curriculumTags: ["Number", "Operations"] },
+        { id: "numbers", title: "Number Explorers", description: "Add, subtract, carry, and borrow with friendly step-by-step maths games.", ages: "5–12", status: "available", route: "modules/numbers/", curriculumTags: ["Number", "Addition", "Subtraction"] },
         { id: "geometry", title: "Shape Safari", description: "Explore shapes, measurement, space, and patterns in the world around us.", ages: "4–12", status: "coming-soon", route: "modules/geometry/", curriculumTags: ["Geometry", "Measurement"] }
       ]
     },

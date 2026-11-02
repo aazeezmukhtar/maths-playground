@@ -1,0 +1,31 @@
+/* Number Explorers: addition, carrying, subtraction and borrowing. */
+(()=>{"use strict";
+const KEY="maths-playground-number-operations-v1",PK="maths-playground-progress-v1",scoped=k=>window.LearnerProfiles?window.LearnerProfiles.storageKey(k):k,$=id=>document.getElementById(id);
+const modes={
+"add-easy":["Let's add! 🍎","Put the groups together. How many altogether?","+", "easy"],
+"add-two":["Add tens and ones 🧮","Add ones, then tens. No carrying is needed.","+","plain"],
+"carry":["Addition with carrying 🚀","Add the ones. Exchange 10 ones for 1 ten when needed.","+","carry"],
+"sub-easy":["Let's take away! 🍪","Take away the second number. How many remain?","−","easy"],
+"sub-two":["Subtract tens and ones 🧱","Subtract ones and tens. No borrowing is needed.","−","plain"],
+"borrow":["Subtraction with borrowing 💡","Exchange 1 ten for 10 ones when there are not enough ones.","−","borrow"]};
+const read=()=>{try{let x=JSON.parse(localStorage.getItem(scoped(KEY))||"{}");return x&&typeof x==="object"?{completed:{},rounds:0,...x}:{completed:{},rounds:0}}catch{return{completed:{},rounds:0}}};
+let state=read(),mode="add-easy",qs=[],idx=0,score=0,locked=false;
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function question(){const [,,op,kind]=modes[mode];let a,b;
+if(kind==="easy"){a=rand(1,10);b=rand(1,10);if(op==="−"&&b>a)[a,b]=[b,a];}
+else if(kind==="plain"&&op==="+"){let t=rand(1,7),u=rand(0,8);a=t*10+u;b=rand(1,Math.min(8,9-t))*10+rand(0,Math.min(8,9-u));}
+else if(kind==="plain"){a=rand(40,99);b=rand(10,Math.min(39,a-1));if(a%10<b%10)b=Math.floor(b/10)*10+Math.max(0,a%10-1);}
+else if(kind==="carry"){a=rand(11,69);let ones=rand(10-a%10,9);let maxTens=Math.floor((99-a-ones)/10);let tens=rand(1,Math.max(1,maxTens));b=tens*10+ones;}
+else {a=rand(31,99);let ones=rand(a%10+1,9);let maxTens=Math.floor((a-1-ones)/10);let tens=rand(1,Math.max(1,maxTens));b=tens*10+ones;}
+const ans=op==="+"?a+b:a-b,onesA=a%10,onesB=b%10;
+let steps=kind==="carry"?"Ones: "+onesA+" + "+onesB+" = "+(onesA+onesB)+". Exchange 10 ones for 1 ten. Then add the tens, including the carried ten. Answer: "+ans+".":kind==="borrow"?"We have "+onesA+" ones but need to take away "+onesB+". Exchange 1 ten for 10 ones: "+(onesA+10)+" − "+onesB+" = "+(onesA+10-onesB)+" ones. Then subtract the tens. Answer: "+ans+".":a+" "+op+" "+b+" = "+ans+".";
+return{a,b,ans,steps};}
+function show(){locked=false;let q=qs[idx];$("equation").textContent=q.a+" "+modes[mode][2]+" "+q.b+" = ?";$("question-count").textContent="Question "+(idx+1)+" of 5";$("score-count").textContent="⭐ "+score+" correct";$("question-progress").style.width=(idx/5*100)+"%";$("answer-input").value="";$("answer-input").disabled=false;$("next-button").hidden=true;$("round-summary").hidden=true;$("feedback").textContent="";$("feedback").className="operation-feedback";$("worked-example").hidden=true;}
+function start(){qs=Array.from({length:5},question);idx=score=0;show();}
+function hint(){let q=qs[idx];$("worked-example").textContent=q.steps;$("worked-example").hidden=false;}
+function check(e){e.preventDefault();if(locked||$("answer-input").value==="")return;locked=true;let q=qs[idx];if(Number($("answer-input").value)===q.ans){score++;$("feedback").textContent="Brilliant! That's correct. 🌟";$("feedback").className="operation-feedback good";}else{$("feedback").textContent="Good try! The answer is "+q.ans+". "+q.steps;$("feedback").className="operation-feedback try";$("worked-example").textContent=q.steps;$("worked-example").hidden=false;}$("answer-input").disabled=true;$("next-button").hidden=false;$("next-button").textContent=idx===4?"See my stars →":"Next question →";$("score-count").textContent="⭐ "+score+" correct";}
+function finish(){let stars=score===5?3:score>=4?2:score>=3?1:0,old=state.completed[mode]||{},first=!old.rewarded;state.completed[mode]={bestStars:Math.max(stars,old.bestStars||0),bestCorrect:Math.max(score,old.bestCorrect||0),attempts:(old.attempts||0)+1,rewarded:old.rewarded||Boolean(stars)};state.rounds++;try{localStorage.setItem(scoped(KEY),JSON.stringify(state));}catch{}let xp=0,coins=0;if(first&&stars){try{let p=JSON.parse(localStorage.getItem(scoped(PK))||"{}");p.points=(Number(p.points)||0)+10;localStorage.setItem(scoped(PK),JSON.stringify(p));xp=10;$("total-points").textContent=p.points;}catch{}coins=window.PlaygroundGamification?.awardActivity("number-operations-"+mode,10)||0;}let box=$("round-summary");box.hidden=false;box.innerHTML="<strong>"+(stars?"Well done!":"Keep practising!")+"</strong><span class='operation-stars'>"+"★".repeat(stars)+"☆".repeat(3-stars)+"</span><p>You got "+score+" out of 5 correct. "+(first&&stars?"You earned "+xp+" XP and "+coins+" coins!":"Try again to improve your stars.")+"</p><button type='button' class='operation-button' id='again-button'>Play again</button>";$("again-button").addEventListener("click",start);$("question-progress").style.width="100%";$("next-button").hidden=true;}
+function next(){if(idx===4)finish();else{idx++;show();}}
+function choose(btn){mode=btn.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",String(x===btn)));$("game-title").textContent=modes[mode][0];$("game-instruction").textContent=modes[mode][1];start();}
+document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>choose(b)));$("answer-form").addEventListener("submit",check);$("hint-button").addEventListener("click",hint);$("next-button").addEventListener("click",next);$("game-instruction").textContent=modes[mode][1];try{$("total-points").textContent=JSON.parse(localStorage.getItem(scoped(PK))||"{}").points||0}catch{}start();document.addEventListener("learnerprofilechange",()=>{state=read();start();});});
+})();
