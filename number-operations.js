@@ -36,6 +36,7 @@ const lessons={"add-easy":"Addition means putting groups together. For 5 + 3, st
 const demoTitles={"add-easy":"Build a group of apples","add-two":"Build 23 + 14","carry":"Make a new ten","sub-easy":"Take biscuits away","sub-two":"Subtract tens and ones","borrow":"Exchange a ten for ones"};
 function renderDemo(){
  const board=$("lesson-demo"),desc=$("demo-instruction"),visual=$("demo-visual"),action=$("demo-action"),status=$("demo-status");
+ if(!board||!desc||!visual||!action||!status)return;
  demoStep=0;board.dataset.mode=mode;action.disabled=false;action.textContent="Let's try it →";
  const setup={
  "add-easy":["Start with 5 apples. Tap to add one apple at a time until you reach 8.","🍎 🍎 🍎 🍎 🍎", "Add one apple","5 apples. Add 3 more to make 8."],
@@ -47,8 +48,10 @@ function renderDemo(){
  }[mode];
  desc.textContent=setup[0];visual.textContent=setup[1];status.textContent="Your turn: use the button to explore.";action.textContent=setup[2]+" →";
 }
-function advanceDemo(){
+function advanceDemo(event){
+ if(event){event.preventDefault();event.stopPropagation();}
  const visual=$("demo-visual"),status=$("demo-status"),action=$("demo-action"),desc=$("demo-instruction");
+ if(!visual||!status||!action||!desc)return;
  demoStep++;
  if(mode==="add-easy"){const n=Math.min(8,5+demoStep);visual.textContent="🍎 ".repeat(n).trim();status.textContent=n===8?"You combined 5 and 3. 5 + 3 = 8!":"You now have "+n+" apples. Keep going.";action.disabled=n===8;action.textContent=n===8?"Great work!":"Add one apple →";}
  else if(mode==="sub-easy"){const n=Math.max(5,8-demoStep);visual.textContent="🍪 ".repeat(n).trim();status.textContent=n===5?"You took away 3. 8 − 3 = 5!":"You have "+n+" biscuits left.";action.disabled=n===5;action.textContent=n===5?"Great work!":"Take away one →";}
@@ -58,5 +61,5 @@ function advanceDemo(){
  else if(mode==="borrow"){visual.innerHTML='<span class="demo-blocks"><b>4 tens</b><b>12 ones</b></span>';desc.textContent="Now there are enough ones. Subtract 8 ones, then subtract 1 ten.";status.textContent="One ten was exchanged for 10 ones. 5 tens and 2 ones became 4 tens and 12 ones. 52 − 18 = 34.";action.disabled=true;action.textContent="You exchanged correctly!";}
 }
 function choose(btn){mode=btn.dataset.mode;document.querySelectorAll("[data-mode]").forEach(x=>x.setAttribute("aria-pressed",String(x===btn)));$("game-title").textContent=modes[mode][0];$("game-instruction").textContent=modes[mode][1];$("lesson-heading").textContent=modes[mode][0]+" — Learn";$("lesson-content").textContent=lessons[mode];renderDemo();$("lesson-panel").hidden=false;$("operation-workspace").hidden=true;$("start-practice").textContent="I understand — start practice";}
-document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>choose(b)));$("demo-action").addEventListener("click",advanceDemo);$("start-practice").addEventListener("click",()=>{$("lesson-panel").hidden=true;$("operation-workspace").hidden=false;start();});$("answer-form").addEventListener("submit",check);$("hint-button").addEventListener("click",hint);$("next-button").addEventListener("click",next);$("game-instruction").textContent=modes[mode][1];try{$("total-points").textContent=JSON.parse(localStorage.getItem(scoped(PK))||"{}").points||0}catch{}$("lesson-heading").textContent=modes[mode][0]+" — Learn";$("lesson-content").textContent=lessons[mode];renderDemo();$("operation-workspace").hidden=true;document.addEventListener("learnerprofilechange",()=>{state=read();});});
+document.addEventListener("DOMContentLoaded",()=>{document.querySelectorAll("[data-mode]").forEach(b=>b.addEventListener("click",()=>choose(b)));document.addEventListener("click",event=>{const demoButton=event.target.closest("#demo-action");if(demoButton){advanceDemo(event);}});$("start-practice").addEventListener("click",()=>{$("lesson-panel").hidden=true;$("operation-workspace").hidden=false;start();});$("answer-form").addEventListener("submit",check);$("hint-button").addEventListener("click",hint);$("next-button").addEventListener("click",next);$("game-instruction").textContent=modes[mode][1];try{$("total-points").textContent=JSON.parse(localStorage.getItem(scoped(PK))||"{}").points||0}catch{}$("lesson-heading").textContent=modes[mode][0]+" — Learn";$("lesson-content").textContent=lessons[mode];renderDemo();$("operation-workspace").hidden=true;document.addEventListener("learnerprofilechange",()=>{state=read();});});
 })();
